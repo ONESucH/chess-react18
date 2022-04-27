@@ -1,6 +1,61 @@
-.title {
-  margin-top: 10px;
+input[type="color"] {
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  border: none;
+}
+
+.game-timer button, input[type="color"] {
+  margin-right: 5px;
+}
+
+.game, .cell,
+.game-users, .game-dashboard,
+.user, .user-main {
+  display: flex;
+}
+
+.game-dashboard, .game-users {
+  flex-flow: column;
+}
+
+.game, .user, .user-main {
+  flex-flow: row nowrap;
+}
+
+.user, .user-main {
+  align-items: center;
+}
+
+.user-descriptions h5, .user,
+.user-main, .counter-step h5 {
+  margin-bottom: 20px;
+}
+
+.game-users, .cell {
+  justify-content: center;
+}
+
+.game-title, .counter-step h5 {
   text-align: center;
+}
+
+.game {
+  min-height: 100vh;
+}
+
+.game-dashboard {
+  justify-content: space-around;
+}
+
+.game-users {
+  align-items: center;
+  max-width: 30%;
+  flex-grow: 1;
+}
+
+.game-title {
+  margin-top: 10px;
 }
 
 .Dashboard {
@@ -15,9 +70,7 @@
 
 .cell {
   position: relative;
-  display: flex;
   align-items: stretch;
-  justify-content: center;
   width: 64px;
   height: 64px;
   border-bottom: 1px solid #57c0a9;
@@ -29,4 +82,13 @@
 
 .icon {
   flex-grow: 1;
+}
+
+.game-timer button {
+  background: none;
+  border-radius: 10px;
+  border: 1px solid black;
+  outline: none;
+  padding: 5px 10px;
+  cursor: pointer;
 }

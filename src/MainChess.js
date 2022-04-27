@@ -1,21 +1,34 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import './MainChess.css';
 
 export default () => {
   const [ userName, setUserName ] = useState('Игрок 1');
   const [ userNameMain, setUserNameMain ] = useState('Игрок 2');
-  const [ timerGame, setTimerGame ] = useState(null);
-  const [ userColor, setUserColor ] = useState('#000');
+  const [ playGame, setPlayGame ] = useState(0);
+  const [ timerGame, setTimerGame ] = useState(0);
+  const [ userColor, setUserColor ] = useState('#000000');
   const [ userColorMain, setUserColorMain ] = useState('#1ceeee');
 
-  const startGame = () => {
-    let timer = setInterval(() => {
-      setTimerGame(timerGame + 1);
-    }, 1000);
-
+  useEffect(() => {
     if (timerGame === 30) {
-      clearInterval(timer);
+      console.log(`Игра закончилась на ${timerGame}`);
+      stopGame();
+    } else {
+      if (playGame) {
+        setTimeout(() => {
+          setTimerGame(timerGame + 1);
+        }, 1000);
+      }
     }
+  }, [ timerGame ]);
+
+  const startGame = () => {
+    setPlayGame(1);
+    setTimerGame(1);
+  };
+
+  const stopGame = () => {
+    setPlayGame(0);
   };
 
   return (
@@ -43,7 +56,9 @@ export default () => {
           <h2>Chess GAME</h2>
         </div>
         <div className="game-timer">
-          <button onClick={() => startGame()}>Запуск игры</button>
+          <button onClick={() => !playGame ? startGame() : stopGame()}>
+            {!playGame ? 'Запуск игры' : 'Стоп игра'}
+          </button>
           Игровое время: {timerGame}
         </div>
 

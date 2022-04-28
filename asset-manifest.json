@@ -1,15 +1,27 @@
 {
   "files": {
-    "main.css": "/chess-react18/static/css/main.1e0267ed.css",
-    "main.js": "/chess-react18/static/js/main.6a4d7f69.js",
+    "main.css": "/chess-react18/static/css/main.2cdd6c54.css",
+    "main.js": "/chess-react18/static/js/main.1fadb9db.js",
     "static/js/787.2599b2fe.chunk.js": "/chess-react18/static/js/787.2599b2fe.chunk.js",
+    "static/media/lady.svg": "/chess-react18/static/media/lady.519d55d89ba9f58ed3c9cd968efc7dc5.svg",
+    "static/media/ladyMain.svg": "/chess-react18/static/media/ladyMain.778903ec1126c01587cb6c3cf105cc5c.svg",
+    "static/media/elephant.svg": "/chess-react18/static/media/elephant.75e9a4d137ba08d9925adfe26a49eb58.svg",
+    "static/media/elephantMain.svg": "/chess-react18/static/media/elephantMain.7f46c5efb9d71734e50999e066149831.svg",
+    "static/media/king.svg": "/chess-react18/static/media/king.8b7d071701bcfd71e0bdd62c6c97f8a3.svg",
+    "static/media/kingMain.svg": "/chess-react18/static/media/kingMain.6236522e588158f670fb53587c6d2fce.svg",
+    "static/media/horse.svg": "/chess-react18/static/media/horse.62553867a9c018dfb1e931f48a2798f4.svg",
+    "static/media/horseMain.svg": "/chess-react18/static/media/horseMain.b22ce0e59803f0daf6949a07bfc21cdc.svg",
+    "static/media/pawn.svg": "/chess-react18/static/media/pawn.f1424b6344fbdbe77868bac787cc1eca.svg",
+    "static/media/pawnMain.svg": "/chess-react18/static/media/pawnMain.f29a1b900007edfe8e0de2eb06e475fd.svg",
+    "static/media/tower.svg": "/chess-react18/static/media/tower.394e17fac38dbbcfd4db895a5155f782.svg",
+    "static/media/towerMain.svg": "/chess-react18/static/media/towerMain.56be0384163d5c41e77581acfbb33600.svg",
     "index.html": "/chess-react18/index.html",
-    "main.1e0267ed.css.map": "/chess-react18/static/css/main.1e0267ed.css.map",
-    "main.6a4d7f69.js.map": "/chess-react18/static/js/main.6a4d7f69.js.map",
+    "main.2cdd6c54.css.map": "/chess-react18/static/css/main.2cdd6c54.css.map",
+    "main.1fadb9db.js.map": "/chess-react18/static/js/main.1fadb9db.js.map",
     "787.2599b2fe.chunk.js.map": "/chess-react18/static/js/787.2599b2fe.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1e0267ed.css",
-    "static/js/main.6a4d7f69.js"
+    "static/css/main.2cdd6c54.css",
+    "static/js/main.1fadb9db.js"
   ]
 }

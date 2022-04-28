@@ -1,11 +1,11 @@
-input[type="color"] {
+input[type='color'] {
   border-radius: 100%;
   width: 30px;
   height: 30px;
   border: none;
 }
 
-.game-timer button, input[type="color"] {
+.game-timer button, input[type='color'] {
   margin-right: 5px;
 }
 
@@ -74,6 +74,7 @@ input[type="color"] {
   width: 64px;
   height: 64px;
   border-bottom: 1px solid #57c0a9;
+  background: silver;
 }
 
 .black {
@@ -91,4 +92,8 @@ input[type="color"] {
   outline: none;
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.red {
+  filter: hue-rotate(90deg);
 }

@@ -75,6 +75,7 @@ input[type='color'] {
   height: 64px;
   border-bottom: 1px solid #57c0a9;
   background: silver;
+  cursor: pointer;
 }
 
 .black {
@@ -92,8 +93,4 @@ input[type='color'] {
   outline: none;
   padding: 5px 10px;
   cursor: pointer;
-}
-
-.red {
-  filter: hue-rotate(90deg);
 }

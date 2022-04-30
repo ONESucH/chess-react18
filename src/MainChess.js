@@ -91,6 +91,15 @@ export default () => {
       H1: 'towerMain',
     }
   ]);
+  // У каждой фигуры есть свой ID, чтобы определить возможности ходов
+  const chipSearch = [
+    {name: 'Tower', id: 1},
+    {name: 'Horse', id: 2},
+    {name: 'Elephant', id: 3},
+    {name: 'Lady', id: 4},
+    {name: 'King', id: 5},
+    {name: 'Pawn', id: 6},
+  ];
 
   useEffect(() => {
     if (timerGame === 30) {
@@ -120,8 +129,13 @@ export default () => {
 
     target.innerHTML = '';
     rootStep(id, icon);
+    pawnCapabilities(id);
 
     return target;
+  };
+
+  const pawnCapabilities = (id) => {
+
   };
 
   // Даем шаг фигуре и проверяем может ли ходить
@@ -197,6 +211,7 @@ export default () => {
           <Cell
             stepHistory={stepHistory}
             activeMove={activeMove}
+            chipSearch={chipSearch}
           />
         </div>
       </div>

@@ -114,12 +114,52 @@ export default () => {
     setPlayGame(0);
   };
 
-  const activeMove = ({ id }) => {
-    console.log('id', id);
+  const activeMove = (target) => {
+    const { id } = target;
+    const icon = target.innerHTML;
+
+    target.innerHTML = '';
+    rootStep(id, icon);
+
+    return target;
   };
 
-  const usePosition = () => {
-    return '';
+  // Даем шаг фигуре и проверяем может ли ходить
+  const rootStep = (id, icon) => {
+    let cellABC = id[0];
+    let cellNumber = +id[1];
+    let nextStep = '';
+
+    stepHistory.map(item => {
+      if (item[id] === 'pawn') {
+        nextStep = `${cellABC}${cellNumber - 1}`;
+        updateHistory(item[id], nextStep);
+        item[id] = '';
+      }
+      if (item[id] === 'pawnMain') {
+        nextStep = `${cellABC}${cellNumber + 1}`;
+        updateHistory(item[id], nextStep);
+        item[id] = '';
+      }
+
+      if (nextStep !== '') {
+        let step = document.querySelector(`#${nextStep}`);
+
+        if (step) step.innerHTML = icon;
+      }
+
+      return item;
+    });
+  };
+
+  // Обновляем историю ходов
+  const updateHistory = (nextStep, id) => {
+    stepHistory.map((item) => {
+      if (id in item) item[id] = nextStep;
+      return item;
+    });
+
+    setStepHistory(stepHistory);
   };
 
   return (
@@ -157,7 +197,6 @@ export default () => {
           <Cell
             stepHistory={stepHistory}
             activeMove={activeMove}
-            usePosition={usePosition}
           />
         </div>
       </div>

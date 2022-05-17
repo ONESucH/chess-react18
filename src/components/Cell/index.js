@@ -21,90 +21,90 @@ export const Cell = ({ stepHistory, activeMove }) => {
     <Fragment key={i}>
       <div
         className={`cell ${(i % 2) !== 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`A${i + 1}`}
       >
         <img
-          id={i === 0 ? 1 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 1 : ''}
+          alt={i === 0 ? 1 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 1 : ''}
           src={i === 0 ? Tower : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? TowerMain : ''}
-          alt=""
+          name={i === 0 ? 'Tower' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'TowerMain' : ''}
         />
       </div>
       <div
         className={`cell ${(i % 2) === 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`B${i + 1}`}
       >
         <img
-          id={i === 0 ? 2 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 2 : ''}
+          alt={i === 0 ? 2 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 2 : ''}
           src={i === 0 ? Horse : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? HorseMain : ''}
-          alt=""
+          name={i === 0 ? 'Horse' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'HorseMain' : ''}
         />
       </div>
       <div
         className={`cell ${(i % 2) !== 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`C${i + 1}`}
       >
         <img
-          id={i === 0 ? 3 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 3 : ''}
+          alt={i === 0 ? 3 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 3 : ''}
           src={i === 0 ? Elephant : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? ElephantMain : ''}
-          alt=""
+          name={i === 0 ? 'Elephant' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'ElephantMain' : ''}
         />
       </div>
       <div
         className={`cell ${(i % 2) === 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`D${i + 1}`}
       >
         <img
-          id={i === 0 ? 4 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 4 : ''}
+          alt={i === 0 ? 4 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 4 : ''}
           src={i === 0 ? Lady : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? LadyMain : ''}
-          alt=""
+          name={i === 0 ? 'Lady' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'LadyMain' : ''}
         />
       </div>
       <div
         className={`cell ${(i % 2) !== 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`E${i + 1}`}
       >
         <img
-          id={i === 0 ? 5 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 5 : ''}
+          alt={i === 0 ? 5 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 5 : ''}
           src={i === 0 ? King : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? KingMain : ''}
-          alt=""
+          name={i === 0 ? 'King' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'KingMain' : ''}
         />
       </div>
       <div
         className={`cell ${(i % 2) === 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`F${i + 1}`}
       >
         <img
-          id={i === 0 ? 3 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 3 : ''}
+          alt={i === 0 ? 3 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 3 : ''}
           src={i === 0 ? Elephant : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? ElephantMain : ''}
-          alt=""
+          name={i === 0 ? 'Elephant' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'ElephantMain' : ''}
         />
       </div>
       <div
         className={`cell ${(i % 2) !== 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`G${i + 1}`}
       >
         <img
-          id={i === 0 ? 2 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 2 : ''}
+          alt={i === 0 ? 2 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 2 : ''}
           src={i === 0 ? Horse : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? HorseMain : ''}
-          alt=""
+          name={i === 0 ? 'Horse' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'HorseMain' : ''}
         />
       </div>
       <div
         className={`cell ${(i % 2) === 0 && 'black'}`}
-        onClick={(e) => activeMove(e.currentTarget)}
+        onClick={(e) => activeMove(e)}
         id={`H${i + 1}`}
       >
         <img
-          id={i === 0 ? 1 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 1 : ''}
+          alt={i === 0 ? 1 : i === 1 ? 6 : i === 6 ? 6 : i === 7 ? 1 : ''}
           src={i === 0 ? Tower : i === 1 ? Pawn : i === 6 ? PawnMain : i === 7 ? TowerMain : ''}
-          alt=""
+          name={i === 0 ? 'Tower' : i === 1 ? 'Pawn' : i === 6 ? 'PawnMain' : i === 7 ? 'TowerMain' : ''}
         />
       </div>
     </Fragment>

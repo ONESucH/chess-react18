@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Cell } from './components/Cell';
+import { Cell } from '../../components/Cell';
+import utils from '../../helpers/utils';
 import './MainChess.css';
 
 export default () => {
+  const [ userStep, setUserStep ] = useState(false);
   const [ userName, setUserName ] = useState('Игрок 1');
   const [ userNameMain, setUserNameMain ] = useState('Игрок 2');
+  const [ activePawn, setActivePawn ] = useState();
   const [ playGame, setPlayGame ] = useState(0);
   const [ timerGame, setTimerGame ] = useState(0);
   const [ userColor, setUserColor ] = useState('#000000');
@@ -91,15 +94,6 @@ export default () => {
       H1: 'towerMain',
     }
   ]);
-  // У каждой фигуры есть свой ID, чтобы определить возможности ходов
-  const chipSearch = [
-    {name: 'Tower', id: 1},
-    {name: 'Horse', id: 2},
-    {name: 'Elephant', id: 3},
-    {name: 'Lady', id: 4},
-    {name: 'King', id: 5},
-    {name: 'Pawn', id: 6},
-  ];
 
   useEffect(() => {
     if (timerGame === 30) {
@@ -123,19 +117,44 @@ export default () => {
     setPlayGame(0);
   };
 
-  const activeMove = (target) => {
-    const { id } = target;
-    const icon = target.innerHTML;
+  // Активный ход фигуры
+  const activeMove = (e) => {
+    const { id } = e.currentTarget;
+    let icon = e.currentTarget.querySelector('img');
 
-    target.innerHTML = '';
-    rootStep(id, icon);
-    pawnCapabilities(id);
+    // Какой игрок ходит?
+    if (icon.name === 'Pawn' || icon.name === 'Tower' || icon.name === 'Horse' || icon.name === 'Elephant' || icon.name === 'King' || icon.name === 'Lady' && userStep) {
+      whichPawnThePlayerChose(icon);
+      pawnCapabilities(id, icon);
+      setUserStep(false);
+    } else {
+      whichPawnThePlayerChose(icon);
+      pawnCapabilities(id, icon);
+      setUserStep(true);
+    }
 
-    return target;
+    //rootStep(id, icon);
+    //pawnCapabilities(icon.alt);
+    return e.currentTarget;
   };
 
-  const pawnCapabilities = (id) => {
+  // Определим какую пешку выбрал игрок
+  const whichPawnThePlayerChose = (icon) => {
+    icon.style.marginTop = '-15px';
+  };
 
+  // Определим возможные ходы
+  const pawnCapabilities = (cellID, icon) => {
+
+    if (cellID !== activePawn) {
+      // Чистим последний ход
+      setActivePawn(cellID);
+      let lastCell = document.querySelector(`div[id="${cellID}"]`);
+      let lastIcon = lastCell.querySelector('img');
+      lastIcon.style.marginTop = '0';
+
+      return lastIcon;
+    }
   };
 
   // Даем шаг фигуре и проверяем может ли ходить
@@ -206,12 +225,15 @@ export default () => {
           </button>
           Игровое время: {timerGame}
         </div>
+        <div className="user-descriptions">
+          <h5>{!userStep ? 'Ваш ход' : 'Противник ходит'}</h5>
+        </div>
 
         <div className="Dashboard">
           <Cell
             stepHistory={stepHistory}
             activeMove={activeMove}
-            chipSearch={chipSearch}
+            chipSearch={utils.chipSearch}
           />
         </div>
       </div>

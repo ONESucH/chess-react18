@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/chess-react18/static/css/main.eafc0725.css",
-    "main.js": "/chess-react18/static/js/main.dfcfb21b.js",
+    "main.js": "/chess-react18/static/js/main.a4d2e82a.js",
     "static/js/787.2599b2fe.chunk.js": "/chess-react18/static/js/787.2599b2fe.chunk.js",
     "static/media/lady.svg": "/chess-react18/static/media/lady.519d55d89ba9f58ed3c9cd968efc7dc5.svg",
     "static/media/ladyMain.svg": "/chess-react18/static/media/ladyMain.778903ec1126c01587cb6c3cf105cc5c.svg",
@@ -17,11 +17,11 @@
     "static/media/towerMain.svg": "/chess-react18/static/media/towerMain.56be0384163d5c41e77581acfbb33600.svg",
     "index.html": "/chess-react18/index.html",
     "main.eafc0725.css.map": "/chess-react18/static/css/main.eafc0725.css.map",
-    "main.dfcfb21b.js.map": "/chess-react18/static/js/main.dfcfb21b.js.map",
+    "main.a4d2e82a.js.map": "/chess-react18/static/js/main.a4d2e82a.js.map",
     "787.2599b2fe.chunk.js.map": "/chess-react18/static/js/787.2599b2fe.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.eafc0725.css",
-    "static/js/main.dfcfb21b.js"
+    "static/js/main.a4d2e82a.js"
   ]
 }

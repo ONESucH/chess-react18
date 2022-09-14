@@ -1,37 +1,40 @@
 import { useEffect, useState } from 'react';
 import { Cell } from '../../components/Cell';
-import utils from '../../helpers/utils';
 import './MainChess.css';
 
 export default () => {
   const [ userStep, setUserStep ] = useState(false);
-  const [ userName, setUserName ] = useState('Игрок 1');
-  const [ userNameMain, setUserNameMain ] = useState('Игрок 2');
-  const [ activePawn, setActivePawn ] = useState();
+  const [ users, setUsers ] = useState({
+    userOne: 'Игрок 1',
+    userTwo: 'Игрок 2',
+    userOneSteps: 0,
+    userTwoSteps: 0,
+  });
   const [ playGame, setPlayGame ] = useState(0);
+  const [ activePawn, setActivePawn ] = useState('');
   const [ timerGame, setTimerGame ] = useState(0);
   const [ userColor, setUserColor ] = useState('#000000');
   const [ userColorMain, setUserColorMain ] = useState('#1ceeee');
   const [ stepHistory, setStepHistory ] = useState([
     {
-      A8: 'tower',
-      B8: 'horse',
-      C8: 'elephant',
-      D8: 'lady',
-      E8: 'king',
-      F8: 'elephant',
-      G8: 'horse',
-      H8: 'tower',
+      A8: 'towerMain',
+      B8: 'horseMain',
+      C8: 'elephantMain',
+      D8: 'ladyMain',
+      E8: 'kingMain',
+      F8: 'elephantMain',
+      G8: 'horseMain',
+      H8: 'towerMain',
     },
     {
-      A7: 'pawn',
-      B7: 'pawn',
-      C7: 'pawn',
-      D7: 'pawn',
-      E7: 'pawn',
-      F7: 'pawn',
-      G7: 'pawn',
-      H7: 'pawn',
+      A7: 'pawnMain',
+      B7: 'pawnMain',
+      C7: 'pawnMain',
+      D7: 'pawnMain',
+      E7: 'pawnMain',
+      F7: 'pawnMain',
+      G7: 'pawnMain',
+      H7: 'pawnMain',
     },
     {
       A6: '',
@@ -74,39 +77,37 @@ export default () => {
       H3: '',
     },
     {
-      A2: 'pawnMain',
-      B2: 'pawnMain',
-      C2: 'pawnMain',
-      D2: 'pawnMain',
-      E2: 'pawnMain',
-      F2: 'pawnMain',
-      G2: 'pawnMain',
-      H2: 'pawnMain',
+      A2: 'pawn',
+      B2: 'pawn',
+      C2: 'pawn',
+      D2: 'pawn',
+      E2: 'pawn',
+      F2: 'pawn',
+      G2: 'pawn',
+      H2: 'pawn',
     },
     {
-      A1: 'towerMain',
-      B1: 'horseMain',
-      C1: 'elephantMain',
-      D1: 'ladyMain',
-      E1: 'kingMain',
-      F1: 'elephantMain',
-      G1: 'horseMain',
-      H1: 'towerMain',
+      A1: 'tower',
+      B1: 'horse',
+      C1: 'elephant',
+      D1: 'lady',
+      E1: 'king',
+      F1: 'elephant',
+      G1: 'horse',
+      H1: 'tower',
     }
   ]);
 
   useEffect(() => {
-    if (timerGame === 30) {
-      console.log(`Игра закончилась на ${timerGame}`);
+    const timer = setTimeout(() => {
+      setTimerGame(timerGame + 1);
+    }, 1000);
+
+    if (timerGame && timerGame === 60 || !playGame) {
+      clearTimeout(timer);
       stopGame();
-    } else {
-      if (playGame) {
-        setTimeout(() => {
-          setTimerGame(timerGame + 1);
-        }, 1000);
-      }
     }
-  }, [ timerGame ]);
+  }, [ timerGame, playGame ]);
 
   const startGame = () => {
     setPlayGame(1);
@@ -114,73 +115,68 @@ export default () => {
   };
 
   const stopGame = () => {
+    setTimerGame(0);
     setPlayGame(0);
+    setActivePawn('');
+    setUserStep(false);
   };
 
   // Активный ход фигуры
   const activeMove = (e) => {
-    const { id } = e.currentTarget;
-    let icon = e.currentTarget.querySelector('img');
+    if (!timerGame) return;
+
+    const icon = e.currentTarget;
+    const parentTag = e.currentTarget.parentNode;
+    const cellID = parentTag.getAttribute('id');
+    const getName = e.target.getAttribute('name');
 
     // Какой игрок ходит?
-    if (icon.name === 'Pawn' || icon.name === 'Tower' || icon.name === 'Horse' || icon.name === 'Elephant' || icon.name === 'King' || icon.name === 'Lady' && userStep) {
-      whichPawnThePlayerChose(icon);
-      pawnCapabilities(id, icon);
-      setUserStep(false);
-    } else {
-      whichPawnThePlayerChose(icon);
-      pawnCapabilities(id, icon);
+    if ((getName === 'ladyMain' || getName === 'kingMain' || getName === 'elephantMain' || getName === 'horseMain' || getName === 'towerMain' || getName === 'pawnMain') && !userStep) {
+      whichPawnThePlayerChose(getName, icon, cellID);
+      setUsers((props) => ({
+        ...props,
+        userOneSteps: props.userOneSteps++
+      }))
       setUserStep(true);
     }
-
-    //rootStep(id, icon);
-    //pawnCapabilities(icon.alt);
-    return e.currentTarget;
+    if ((getName === 'lady' || getName === 'king' || getName === 'elephant' || getName === 'horse' || getName === 'tower' || getName === 'pawn') && userStep) {
+      whichPawnThePlayerChose(getName, icon, cellID);
+      setUsers((props) => ({
+        ...props,
+        userTwoSteps: props.userTwoSteps++
+      }))
+      setUserStep(false);
+    }
   };
 
   // Определим какую пешку выбрал игрок
-  const whichPawnThePlayerChose = (icon) => {
+  const whichPawnThePlayerChose = (name, icon, cellID) => {
     icon.style.marginTop = '-15px';
+    // Активная пешка
+    setActivePawn(name);
+    pawnCapabilities(name, icon, cellID);
   };
 
   // Определим возможные ходы
-  const pawnCapabilities = (cellID, icon) => {
-
-    if (cellID !== activePawn) {
-      // Чистим последний ход
-      setActivePawn(cellID);
-      let lastCell = document.querySelector(`div[id="${cellID}"]`);
-      let lastIcon = lastCell.querySelector('img');
-      lastIcon.style.marginTop = '0';
-
-      return lastIcon;
-    }
-  };
-
-  // Даем шаг фигуре и проверяем может ли ходить
-  const rootStep = (id, icon) => {
-    let cellABC = id[0];
-    let cellNumber = +id[1];
+  const pawnCapabilities = (name, icon, cellID) => {
+    let cellABC = cellID[0];
+    let cellNumber = +cellID[1];
     let nextStep = '';
 
     stepHistory.map(item => {
-      if (item[id] === 'pawn') {
-        nextStep = `${cellABC}${cellNumber - 1}`;
-        updateHistory(item[id], nextStep);
-        item[id] = '';
+      if (name === 'pawnMain' && item[cellID]) {
+        //nextStep = `${cellABC}${cellNumber + 1}`;
+        //updateHistory(item[cellID], nextStep);
+        //item[cellID] = '';
       }
-      if (item[id] === 'pawnMain') {
-        nextStep = `${cellABC}${cellNumber + 1}`;
-        updateHistory(item[id], nextStep);
-        item[id] = '';
+      if (name === 'pawn' && item[cellID]) {
+        //nextStep = `${cellABC}${cellNumber - 1}`;
+        //updateHistory(item[cellID], nextStep);
+        //item[name] = '';
       }
+      if (name === 'towerMain' && item[cellID]) {
 
-      if (nextStep !== '') {
-        let step = document.querySelector(`#${nextStep}`);
-
-        if (step) step.innerHTML = icon;
       }
-
       return item;
     });
   };
@@ -191,7 +187,6 @@ export default () => {
       if (id in item) item[id] = nextStep;
       return item;
     });
-
     setStepHistory(stepHistory);
   };
 
@@ -203,16 +198,16 @@ export default () => {
         </div>
         <div className="user">
           <input type="color" value={userColor} onChange={(e) => setUserColor(e.target.value)}/>
-          <p>{userName}</p>
+          <p>{users.userOne}</p>
         </div>
         <div className="user-main">
           <input type="color" value={userColorMain} onChange={(e) => setUserColorMain(e.target.value)}/>
-          <p>{userNameMain}</p>
+          <p>{users.userTwo}</p>
         </div>
         <div className="counter-step">
           <h5>Количество ходов участников</h5>
-          <p>{userName} : <span>0</span></p>
-          <p>{userNameMain} : <span>0</span></p>
+          <p style={{ color: userColor}}>{users.userOne} : <span>{users.userOneSteps}</span></p>
+          <p style={{ color: userColorMain}}>{users.userTwo} : <span>{users.userTwoSteps}</span></p>
         </div>
       </div>
       <div className="game-dashboard">
@@ -221,21 +216,17 @@ export default () => {
         </div>
         <div className="game-timer">
           <button onClick={() => !playGame ? startGame() : stopGame()}>
-            {!playGame ? 'Запуск игры' : 'Стоп игра'}
+            {!timerGame ? 'Запуск игры' : 'Стоп игра'}
           </button>
-          Игровое время: {timerGame}
+          {timerGame !== 30 ? `Игровое время: ${timerGame}` : 'Игровое время закончилось'}
         </div>
         <div className="user-descriptions">
           <h5>{!userStep ? 'Ваш ход' : 'Противник ходит'}</h5>
         </div>
-
-        <div className="Dashboard">
-          <Cell
+        <Cell
             stepHistory={stepHistory}
             activeMove={activeMove}
-            chipSearch={utils.chipSearch}
-          />
-        </div>
+        />
       </div>
     </div>
   );

@@ -160,12 +160,9 @@ export default () => {
 
     // Даем полноценный ход пешке
     if (getFocusTag) {
-      const allFocusesTags = document.querySelectorAll('.focus');
-
       clearFocuses();
       setUserStep(!userStep);
-
-      // ПРОДОЛЖАЕМ обновлять ход в истории
+      nextMoved(cellID);
     }
 
     // Какой игрок ходит?
@@ -190,6 +187,16 @@ export default () => {
     setActiveCellID(cellID);
   };
 
+  // ПРОДОЛЖАЕМ ходить и обновлять ход в истории
+  const nextMoved = (NewCellID) => {
+    const findActiveCell = document.querySelector(`#${activeCellID}`);
+    const newFindActiveCell = document.querySelector(`#${NewCellID}`);
+    const icon = findActiveCell.innerHTML;
+    findActiveCell.innerHTML = '';
+    newFindActiveCell.innerHTML = icon;
+    updateHistory(activeCellID, NewCellID, activePawn);
+  }
+
   // Определим какую пешку выбрал игрок
   const whichPawnThePlayerChose = (name, icon, cellID) => {
     icon.style.marginTop = '-15px';
@@ -205,19 +212,8 @@ export default () => {
 
   // Определим возможные ходы
   const pawnCapabilities = (name, icon, cellID) => {
-    const cell = document.querySelector(`#${cellID}`);
     let cellABC = cellID[0];
     let cellNumber = +cellID[1];
-    let nextStep = '';
-
-    // После изменения хода игроков очищаются подсказки
-    if (activePawn !== name) {
-
-    }
-
-    //nextStep = `${cellABC}${cellNumber + 1}`;
-    //updateHistory(item[cellID], nextStep);
-    //item[cellID] = '';
 
     stepHistory.map(item => {
       if (name === 'pawnMain' && item[cellID]) {
@@ -260,10 +256,11 @@ export default () => {
     });
   };
 
-  // Обновляем историю ходов
-  const updateHistory = (id, nextStep) => {
+  // Обновляем историю ходов (Старый ID, Новый ID, Значение)
+  const updateHistory = (prevID, nextID, value) => {
     stepHistory.map((item) => {
-      if (id in item) item[id] = nextStep;
+      if (prevID in item) item[prevID] = '';
+      if (nextID in item) item[nextID] = value;
       return item;
     });
     setStepHistory(stepHistory);

@@ -149,8 +149,13 @@ export default () => {
     // Если изменилась пешка, возвращаем старые изменения
     if (activeCellID) {
       const beforeCellFocus = document.querySelector(`#${activeCellID}`);
-      const iconBeforeCellFocus = beforeCellFocus.childNodes[0];
-      iconBeforeCellFocus.style.marginTop = '0';
+
+      if (beforeCellFocus) {
+        const iconBeforeCellFocus = beforeCellFocus.childNodes[0];
+        if (iconBeforeCellFocus) {
+          iconBeforeCellFocus.style.marginTop = '0';
+        }
+      }
     }
 
     // Даем полноценный ход пешке

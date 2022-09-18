@@ -99,6 +99,7 @@ export default () => {
       H8: 'towerMain',
     }
   ]);
+  const defaultPositions = stepHistory;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -121,6 +122,7 @@ export default () => {
     setPlayGame(0);
     setActivePawn('');
     setUserStep(false);
+    setStepHistory(defaultPositions);
   };
 
   // Очищаем поле боя от фокусов
@@ -252,9 +254,69 @@ export default () => {
           }
         }
       }
+      if ((name === 'towerMain' || name === 'tower' || name === 'lady' || name === 'ladyMain') && item[cellID]) {
+        searchTop(cellABC, cellNumber);
+        searchBottom(cellABC, cellNumber);
+        searchLeft(cellABC, cellNumber);
+        searchRight(cellABC, cellNumber);
+      }
       return item;
     });
   };
+
+  const searchTop = (cellABC, cellNumber) => {
+    for(let i = 1; i <= 9; i++) {
+      const searchPawnMoveTop = document.querySelector(`#${cellABC}${cellNumber - i}`);
+      if (!searchPawnMoveTop?.innerHTML) {
+        findNextMove(searchPawnMoveTop);
+      } else {
+        findNextMove(searchPawnMoveTop);
+        return;
+      }
+    }
+  }
+
+  const searchBottom = (cellABC, cellNumber) => {
+    for(let i = 1; i <= 9; i++) {
+      const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
+      if (!searchPawnMoveBottom?.innerHTML) {
+        findNextMove(searchPawnMoveBottom);
+      } else {
+        findNextMove(searchPawnMoveBottom);
+        return;
+      }
+    }
+  }
+
+  const searchLeft = (cellABC, cellNumber) => {
+    const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
+
+    for(let i = 1; i <= 9; i++) {
+      const searchPawnMoveLeft = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber}`);
+
+      if (!searchPawnMoveLeft?.innerHTML) {
+        findNextMove(searchPawnMoveLeft);
+      } else {
+        findNextMove(searchPawnMoveLeft);
+        return;
+      }
+    }
+  }
+
+  const searchRight = (cellABC, cellNumber) => {
+    const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
+
+    for(let i = 1; i <= 9; i++) {
+      const searchPawnMoveRight = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber}`);
+
+      if (!searchPawnMoveRight?.innerHTML) {
+        findNextMove(searchPawnMoveRight);
+      } else {
+        findNextMove(searchPawnMoveRight);
+        return;
+      }
+    }
+  }
 
   // Обновляем историю ходов (Старый ID, Новый ID, Значение)
   const updateHistory = (prevID, nextID, value) => {

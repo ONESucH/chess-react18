@@ -252,7 +252,11 @@ export default () => {
         searchG(cellABC, cellNumber);
       }
       if ((name === 'elephantMain' || name === 'elephant' || name === 'ladyMain' || name === 'lady' || name === 'kingMain' || name === 'king') && item[cellID]) {
-        searchX(cellABC, cellNumber, 1);
+        if (name === 'kingMain' || name === 'king') {
+          searchX(cellABC, cellNumber, 1);
+        } else {
+          searchX(cellABC, cellNumber);
+        }
       }
       return item;
     });
@@ -265,7 +269,7 @@ export default () => {
       if (!searchElephantMovedTopLeft?.innerHTML) {
         findNextMove(searchElephantMovedTopLeft);
       } else {
-        return
+        return;
       }
     }
   }
@@ -277,7 +281,7 @@ export default () => {
       if (!searchElephantMovedTopRight?.innerHTML) {
         findNextMove(searchElephantMovedTopRight);
       } else {
-        return
+        return;
       }
     }
   }
@@ -289,7 +293,7 @@ export default () => {
       if (!searchElephantMovedBottomLeft?.innerHTML) {
         findNextMove(searchElephantMovedBottomLeft);
       } else {
-        return
+        return;
       }
     }
   }
@@ -301,7 +305,7 @@ export default () => {
       if (!searchElephantMovedBottomRight?.innerHTML) {
         findNextMove(searchElephantMovedBottomRight);
       } else {
-        return
+        return;
       }
     }
   }
@@ -351,8 +355,6 @@ export default () => {
       }
       if (!searchHorseMovedBottomRight?.innerHTML) {
         findNextMove(searchHorseMovedBottomRight);
-      } else {
-        return;
       }
     }
   }
@@ -364,7 +366,6 @@ export default () => {
       if (!searchPawnMoveTop?.innerHTML) {
         findNextMove(searchPawnMoveTop);
       } else {
-        findNextMove(searchPawnMoveTop);
         return;
       }
     }
@@ -377,7 +378,6 @@ export default () => {
       if (!searchPawnMoveBottom?.innerHTML) {
         findNextMove(searchPawnMoveBottom);
       } else {
-        findNextMove(searchPawnMoveBottom);
         return;
       }
     }
@@ -392,7 +392,6 @@ export default () => {
       if (!searchPawnMoveLeft?.innerHTML) {
         findNextMove(searchPawnMoveLeft);
       } else {
-        findNextMove(searchPawnMoveLeft);
         return;
       }
     }
@@ -407,7 +406,6 @@ export default () => {
       if (!searchPawnMoveRight?.innerHTML) {
         findNextMove(searchPawnMoveRight);
       } else {
-        findNextMove(searchPawnMoveRight);
         return;
       }
     }

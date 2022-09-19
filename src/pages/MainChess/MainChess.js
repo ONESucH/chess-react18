@@ -194,6 +194,7 @@ export default () => {
     const findActiveCell = document.querySelector(`#${activeCellID}`);
     const newFindActiveCell = document.querySelector(`#${NewCellID}`);
     const icon = findActiveCell.innerHTML;
+
     findActiveCell.innerHTML = '';
     newFindActiveCell.innerHTML = icon;
     updateHistory(activeCellID, NewCellID, activePawn);
@@ -219,54 +220,147 @@ export default () => {
 
     stepHistory.map(item => {
       if (name === 'pawnMain' && item[cellID]) {
-        for(let i = 0; i < stepHistory.length; i++) {
-          // Проверяем ключи для пешок на двойной ход и одинарный при старте
-          if (icon?.getAttribute('parent') === cellID) {
-            // Пешка делает двойной ход
-            for(let el = 1; el <= 2; el++) {
-              const searchPawnMove = document.querySelector(`#${cellABC}${cellNumber - el}`);
-              searchPawnMove && findNextMove(searchPawnMove);
-            }
-          } else {
-            // Пешка делает один ход
-            for(let el = 1; el <= 1; el++) {
-              const searchPawnMove = document.querySelector(`#${cellABC}${cellNumber - el}`);
-              searchPawnMove && findNextMove(searchPawnMove);
-            }
-          }
+        if (icon?.getAttribute('parent') === cellID) {
+          // Пешка делает двойной ход
+          searchTop(cellABC, cellNumber, 2);
+        } else {
+          searchTop(cellABC, cellNumber, 1);
         }
       }
       if (name === 'pawn' && item[cellID]) {
-        for(let i = 0; i < stepHistory.length; i++) {
-          // Проверяем ключи для пешок на двойной ход и одинарный при старте
-          if (icon?.getAttribute('parent') === cellID) {
-            // Пешка делает двойной ход
-            for(let el = 1; el <= 2; el++) {
-              const searchPawnMove = document.querySelector(`#${cellABC}${cellNumber + el}`);
-              searchPawnMove && findNextMove(searchPawnMove);
-            }
-          } else {
-            // Пешка делает один ход
-            for(let el = 1; el <= 1; el++) {
-              const searchPawnMove = document.querySelector(`#${cellABC}${cellNumber + el}`);
-              searchPawnMove && findNextMove(searchPawnMove);
-            }
-          }
+        if (icon?.getAttribute('parent') === cellID) {
+          // Пешка делает двойной ход
+          searchBottom(cellABC, cellNumber, 2);
+        } else {
+          searchBottom(cellABC, cellNumber, 1);
         }
       }
-      if ((name === 'towerMain' || name === 'tower' || name === 'lady' || name === 'ladyMain') && item[cellID]) {
-        searchTop(cellABC, cellNumber);
-        searchBottom(cellABC, cellNumber);
-        searchLeft(cellABC, cellNumber);
-        searchRight(cellABC, cellNumber);
+      if ((name === 'towerMain' || name === 'tower' || name === 'lady' || name === 'ladyMain' || name === 'kingMain' || name === 'king') && item[cellID]) {
+        if (name === 'kingMain' || name === 'king') {
+          searchTop(cellABC, cellNumber, 1);
+          searchBottom(cellABC, cellNumber, 1);
+          searchLeft(cellABC, cellNumber, 1);
+          searchRight(cellABC, cellNumber, 1);
+        } else {
+          searchTop(cellABC, cellNumber);
+          searchBottom(cellABC, cellNumber);
+          searchLeft(cellABC, cellNumber);
+          searchRight(cellABC, cellNumber);
+        }
+      }
+      if ((name === 'horseMain' || name === 'horse') && item[cellID]) {
+        searchG(cellABC, cellNumber);
+      }
+      if ((name === 'elephantMain' || name === 'elephant' || name === 'ladyMain' || name === 'lady' || name === 'kingMain' || name === 'king') && item[cellID]) {
+        searchX(cellABC, cellNumber, 1);
       }
       return item;
     });
   };
 
-  const searchTop = (cellABC, cellNumber) => {
-    for(let i = 1; i <= 9; i++) {
+  const findPawnTopLeft = (cellNumber, findIndexABS, doubleStroke) => {
+    for(let i = 1; i <= (doubleStroke || 8); i++) {
+      const searchElephantMovedTopLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber - i}`);
+
+      if (!searchElephantMovedTopLeft?.innerHTML) {
+        findNextMove(searchElephantMovedTopLeft);
+      } else {
+        return
+      }
+    }
+  }
+
+  const findPawnTopRight = (cellNumber, findIndexABS, doubleStroke) => {
+    for(let i = 1; i <= (doubleStroke || 8); i++) {
+      const searchElephantMovedTopRight = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber - i}`);
+
+      if (!searchElephantMovedTopRight?.innerHTML) {
+        findNextMove(searchElephantMovedTopRight);
+      } else {
+        return
+      }
+    }
+  }
+
+  const findPawnBottomLeft = (cellNumber, findIndexABS, doubleStroke) => {
+    for(let i = 1; i <= (doubleStroke || 8); i++) {
+      const searchElephantMovedBottomLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber + i}`);
+
+      if (!searchElephantMovedBottomLeft?.innerHTML) {
+        findNextMove(searchElephantMovedBottomLeft);
+      } else {
+        return
+      }
+    }
+  }
+
+  const findPawnBottomRight = (cellNumber, findIndexABS, doubleStroke) => {
+    for(let i = 1; i <= (doubleStroke || 8); i++) {
+      const searchElephantMovedBottomRight = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber + i}`);
+
+      if (!searchElephantMovedBottomRight?.innerHTML) {
+        findNextMove(searchElephantMovedBottomRight);
+      } else {
+        return
+      }
+    }
+  }
+
+  const searchX = (cellABC, cellNumber, doubleStroke) => {
+    const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
+
+    findPawnTopLeft(cellNumber, findIndexABS, doubleStroke);
+    findPawnTopRight(cellNumber, findIndexABS, doubleStroke);
+    findPawnBottomLeft(cellNumber, findIndexABS, doubleStroke);
+    findPawnBottomRight(cellNumber, findIndexABS, doubleStroke);
+  }
+
+  const searchG = (cellABC, cellNumber) => {
+    const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
+
+    for(let i = 1; i <= 8; i++) {
+      const searchHorseMovedTopLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber - 2}`);
+      const searchHorseMovedTopRight = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber - 2}`);
+      const searchHorseMovedLeftTop = document.querySelector(`#${helpers.cellABS[findIndexABS - 2]}${cellNumber - 1}`);
+      const searchHorseMovedLeftBottom = document.querySelector(`#${helpers.cellABS[findIndexABS - 2]}${cellNumber + 1}`);
+      const searchHorseMovedRightTop = document.querySelector(`#${helpers.cellABS[findIndexABS + 2]}${cellNumber - 1}`);
+      const searchHorseMovedRightBottom = document.querySelector(`#${helpers.cellABS[findIndexABS + 2]}${cellNumber + 1}`);
+      const searchHorseMovedBottomLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber + 2}`);
+      const searchHorseMovedBottomRight = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber + 2}`);
+
+      if (!searchHorseMovedTopLeft?.innerHTML) {
+        findNextMove(searchHorseMovedTopLeft);
+      }
+      if (!searchHorseMovedTopRight?.innerHTML) {
+        findNextMove(searchHorseMovedTopRight);
+      }
+      if (!searchHorseMovedLeftTop?.innerHTML) {
+        findNextMove(searchHorseMovedLeftTop);
+      }
+      if (!searchHorseMovedLeftBottom?.innerHTML) {
+        findNextMove(searchHorseMovedLeftBottom);
+      }
+      if (!searchHorseMovedRightTop?.innerHTML) {
+        findNextMove(searchHorseMovedRightTop);
+      }
+      if (!searchHorseMovedRightBottom?.innerHTML) {
+        findNextMove(searchHorseMovedRightBottom);
+      }
+      if (!searchHorseMovedBottomLeft?.innerHTML) {
+        findNextMove(searchHorseMovedBottomLeft);
+      }
+      if (!searchHorseMovedBottomRight?.innerHTML) {
+        findNextMove(searchHorseMovedBottomRight);
+      } else {
+        return;
+      }
+    }
+  }
+
+  const searchTop = (cellABC, cellNumber, doubleStroke) => {
+    for(let i = 1; i <= (doubleStroke || 9); i++) {
       const searchPawnMoveTop = document.querySelector(`#${cellABC}${cellNumber - i}`);
+
       if (!searchPawnMoveTop?.innerHTML) {
         findNextMove(searchPawnMoveTop);
       } else {
@@ -276,9 +370,10 @@ export default () => {
     }
   }
 
-  const searchBottom = (cellABC, cellNumber) => {
-    for(let i = 1; i <= 9; i++) {
+  const searchBottom = (cellABC, cellNumber, doubleStroke) => {
+    for(let i = 1; i <= (doubleStroke || 9); i++) {
       const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
+
       if (!searchPawnMoveBottom?.innerHTML) {
         findNextMove(searchPawnMoveBottom);
       } else {
@@ -288,10 +383,10 @@ export default () => {
     }
   }
 
-  const searchLeft = (cellABC, cellNumber) => {
+  const searchLeft = (cellABC, cellNumber, doubleStroke) => {
     const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
 
-    for(let i = 1; i <= 9; i++) {
+    for(let i = 1; i <= (doubleStroke || 9); i++) {
       const searchPawnMoveLeft = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber}`);
 
       if (!searchPawnMoveLeft?.innerHTML) {
@@ -303,10 +398,10 @@ export default () => {
     }
   }
 
-  const searchRight = (cellABC, cellNumber) => {
+  const searchRight = (cellABC, cellNumber, doubleStroke) => {
     const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
 
-    for(let i = 1; i <= 9; i++) {
+    for(let i = 1; i <= (doubleStroke || 9); i++) {
       const searchPawnMoveRight = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber}`);
 
       if (!searchPawnMoveRight?.innerHTML) {

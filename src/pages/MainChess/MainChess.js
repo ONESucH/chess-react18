@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Cell } from '../../components/Cell';
 import './MainChess.css';
+import { getPadTime } from '../../helpers/getPadTime';
 import helpers from '../../helpers/utils';
 
 export default () => {
+  const [ timerGameOne, setTimerGameOne ] = useState(5 * 60);
+  const [ timerGameTwo, setTimerGameTwo ] = useState(5 * 60);
+  const [ isCountingOne, setIsCountingOne ] = useState(false);
+  const [ isCountingTwo, setIsCountingTwo ] = useState(false);
+  const minutesOne = getPadTime(Math.floor(timerGameOne / 60));
+  const secondsOne = getPadTime(timerGameOne % 60);
+  const minutesTwo = getPadTime(Math.floor(timerGameTwo / 60));
+  const secondsTwo = getPadTime(timerGameTwo % 60);
   const [ userStep, setUserStep ] = useState(false);
   const [ users, setUsers ] = useState({
     userOne: 'Игрок 1',
@@ -14,7 +23,6 @@ export default () => {
   const [ playGame, setPlayGame ] = useState(0);
   const [ activePawn, setActivePawn ] = useState('');
   const [ activeCellID, setActiveCellID ] = useState('');
-  const [ timerGame, setTimerGame ] = useState(0);
   const [ userColor, setUserColor ] = useState('#000000');
   const [ userColorMain, setUserColorMain ] = useState('#1ceeee');
   const [ stepHistory, setStepHistory ] = useState([
@@ -99,30 +107,66 @@ export default () => {
       H8: 'towerMain',
     }
   ]);
-  const defaultPositions = stepHistory;
+
+  // Игры закончилась!!
+  useEffect(() => {
+    if (!timerGameOne || !timerGameTwo) {
+      stopGame();
+
+      if (!timerGameOne) {
+        console.log(`Проиграл игрок: ${users.userOne}`);
+      }
+      if (!timerGameTwo) {
+        console.log(`Проиграл игрок: ${users.userTwo}`);
+      }
+    }
+  })
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimerGame(timerGame + 1);
+    const interval = setInterval(() => {
+      isCountingOne && setTimerGameOne((timeLeft) => timeLeft >= 1 ? timeLeft - 1 : 0);
     }, 1000);
-
-    if (timerGame && timerGame === 60 || !playGame) {
-      clearTimeout(timer);
-      stopGame();
+    return () => {
+      clearInterval(interval);
     }
-  }, [ timerGame, playGame ]);
+  }, [isCountingOne]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      isCountingTwo && setTimerGameTwo((timeLeft) => timeLeft >= 1 ? timeLeft - 1 : 0);
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    }
+  }, [isCountingTwo]);
+
+  const stopTimerOne = () => {
+    setIsCountingOne(false);
+  }
+
+  const stopTimerTwo = () => {
+    setIsCountingTwo(false);
+  }
+
+  const resetTimers = () => {
+    setIsCountingOne(false);
+    setIsCountingTwo(false);
+    setTimerGameOne(5 * 60);
+    setTimerGameTwo(5 * 60);
+  }
 
   const startGame = () => {
     setPlayGame(1);
-    setTimerGame(1);
+    setIsCountingOne(true);
   };
 
   const stopGame = () => {
-    setTimerGame(0);
+    stopTimerOne();
+    stopTimerTwo();
+    resetTimers();
     setPlayGame(0);
     setActivePawn('');
     setUserStep(false);
-    setStepHistory(defaultPositions);
   };
 
   // Очищаем поле боя от фокусов
@@ -136,7 +180,7 @@ export default () => {
 
   // Активный ход фигуры
   const activeMove = (e) => {
-    if (!timerGame) return;
+    if (!isCountingOne && !isCountingTwo) return;
 
     const icon = e.currentTarget.childNodes[0] || e.currentTarget;
     const getName = e.currentTarget.childNodes[0] ? e.currentTarget.childNodes[0].getAttribute('name') : '';
@@ -163,24 +207,15 @@ export default () => {
     // Даем полноценный ход пешке
     if (getFocusTag) {
       clearFocuses();
-      setUserStep(!userStep);
       nextMoved(cellID);
     }
 
     // Какой игрок ходит?
     if ((getName === 'ladyMain' || getName === 'kingMain' || getName === 'elephantMain' || getName === 'horseMain' || getName === 'towerMain' || getName === 'pawnMain') && !userStep) {
       whichPawnThePlayerChose(getName, icon, cellID);
-      setUsers((props) => ({
-        ...props,
-        userOneSteps: props.userOneSteps++
-      }))
     }
     if ((getName === 'lady' || getName === 'king' || getName === 'elephant' || getName === 'horse' || getName === 'tower' || getName === 'pawn') && userStep) {
       whichPawnThePlayerChose(getName, icon, cellID);
-      setUsers((props) => ({
-        ...props,
-        userTwoSteps: props.userTwoSteps++
-      }))
     }
 
     // Активная пешка
@@ -195,9 +230,31 @@ export default () => {
     const newFindActiveCell = document.querySelector(`#${NewCellID}`);
     const icon = findActiveCell.innerHTML;
 
-    findActiveCell.innerHTML = '';
-    newFindActiveCell.innerHTML = icon;
-    updateHistory(activeCellID, NewCellID, activePawn);
+    if (newFindActiveCell) {
+      newFindActiveCell.innerHTML = icon;
+      findActiveCell.innerHTML = '';
+      updateHistory(activeCellID, NewCellID, activePawn);
+    }
+
+    if (userStep) {
+      setIsCountingOne(true);
+      setIsCountingTwo(false);
+      setUsers((props) => ({
+        ...props,
+        userTwoSteps: props.userTwoSteps + 1
+      }))
+      setUserStep(!userStep);
+      stopTimerTwo();
+    } else {
+      setIsCountingOne(false);
+      setIsCountingTwo(true);
+      setUsers((props) => ({
+        ...props,
+        userOneSteps: props.userOneSteps + 1
+      }))
+      setUserStep(!userStep);
+      stopTimerOne();
+    }
   }
 
   // Определим какую пешку выбрал игрок
@@ -447,9 +504,10 @@ export default () => {
         </div>
         <div className="game-timer">
           <button onClick={() => !playGame ? startGame() : stopGame()}>
-            {!timerGame ? 'Запуск игры' : 'Стоп игра'}
-          </button>
-          {timerGame !== 30 ? `Игровое время: ${timerGame}` : 'Игровое время закончилось'}
+            {!playGame ? 'Запуск игры' : 'Стоп игра'}
+          </button><br/>
+          <div>Игровое время основного игрока: {minutesOne}:{secondsOne}</div>
+          <div>Игровое время второго игрока: {minutesTwo}:{secondsTwo}</div>
         </div>
         <div className="user-descriptions">
           <h5>{!userStep ? 'Ваш ход' : 'Противник ходит'}</h5>

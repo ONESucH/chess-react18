@@ -309,17 +309,17 @@ export default () => {
       if (name === 'pawnMain' && item[cellID]) {
         if (icon?.getAttribute('parent') === cellID) {
           // Пешка делает двойной ход
-          searchTop(cellABC, cellNumber, 2);
+          searchTop(cellABC, cellNumber, 2, 'pawnMain');
         } else {
-          searchTop(cellABC, cellNumber, 1);
+          searchTop(cellABC, cellNumber, 1, 'pawnMain');
         }
       }
       if (name === 'pawn' && item[cellID]) {
         if (icon?.getAttribute('parent') === cellID) {
           // Пешка делает двойной ход
-          searchBottom(cellABC, cellNumber, 2);
+          searchBottom(cellABC, cellNumber, 2, 'pawn');
         } else {
-          searchBottom(cellABC, cellNumber, 1);
+          searchBottom(cellABC, cellNumber, 1, 'pawn');
         }
       }
       if ((name === 'towerMain' || name === 'tower' || name === 'lady' || name === 'ladyMain' || name === 'kingMain' || name === 'king') && item[cellID]) {
@@ -446,28 +446,68 @@ export default () => {
     }
   }
 
-  const searchTop = (cellABC, cellNumber, doubleStroke) => {
-    for(let i = 1; i <= (doubleStroke || 9); i++) {
-      const searchPawnMoveTop = document.querySelector(`#${cellABC}${cellNumber - i}`);
+  const searchTop = (cellABC, cellNumber, doubleStroke, pawnName) => {
+    const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
 
-      if (!searchPawnMoveTop?.innerHTML) {
-        findNextMove(searchPawnMoveTop);
+    for(let i = 1; i <= (doubleStroke || 9); i++) {
+      if (pawnName === 'pawnMain') {
+        const searchPawnMoveTop = document.querySelector(`#${cellABC}${cellNumber - i}`);
+        const searchPawnMoveAttackLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber - 1}`);
+        const searchPawnMoveAttackRight = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber - 1}`);
+        const searchPawnMoveAttackLeftIcon = searchPawnMoveAttackLeft?.childNodes[0];
+        const searchPawnMoveAttackRightIcon = searchPawnMoveAttackRight?.childNodes[0];
+        const namePawnLeft = searchPawnMoveAttackLeftIcon?.getAttribute('name');
+        const namePawnRight = searchPawnMoveAttackRightIcon?.getAttribute('name');
+
+        if (searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML) {
+          searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
+          searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
+          return;
+        }
+        if (!searchPawnMoveTop?.innerHTML) {
+          findNextMove(searchPawnMoveTop);
+        }
       } else {
-        attackPawns(searchPawnMoveTop);
-        return;
+        const searchPawnMoveTop = document.querySelector(`#${cellABC}${cellNumber - i}`);
+
+        if (!searchPawnMoveTop?.innerHTML) {
+          findNextMove(searchPawnMoveTop);
+        } else {
+          return;
+        }
       }
     }
   }
 
-  const searchBottom = (cellABC, cellNumber, doubleStroke) => {
-    for(let i = 1; i <= (doubleStroke || 9); i++) {
-      const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
+  const searchBottom = (cellABC, cellNumber, doubleStroke, pawnName) => {
+    const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
 
-      if (!searchPawnMoveBottom?.innerHTML) {
-        findNextMove(searchPawnMoveBottom);
+    for(let i = 1; i <= (doubleStroke || 9); i++) {
+      if (pawnName === 'pawn') {
+        const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
+        const searchPawnMoveAttackLeft = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber + 1}`);
+        const searchPawnMoveAttackRight = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber + 1}`);
+        const searchPawnMoveAttackLeftIcon = searchPawnMoveAttackLeft?.childNodes[0];
+        const searchPawnMoveAttackRightIcon = searchPawnMoveAttackRight?.childNodes[0];
+        const namePawnLeft = searchPawnMoveAttackLeftIcon?.getAttribute('name');
+        const namePawnRight = searchPawnMoveAttackRightIcon?.getAttribute('name');
+
+        if (searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML && pawnName !== activePawn) {
+          searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
+          searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
+          return;
+        }
+        if (!searchPawnMoveBottom?.innerHTML) {
+          findNextMove(searchPawnMoveBottom);
+        }
       } else {
-        attackPawns(searchPawnMoveBottom);
-        return;
+        const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber - i}`);
+
+        if (!searchPawnMoveBottom?.innerHTML) {
+          findNextMove(searchPawnMoveBottom);
+        } else {
+          return;
+        }
       }
     }
   }

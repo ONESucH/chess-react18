@@ -5,6 +5,7 @@ import { getPadTime } from '../../helpers/getPadTime';
 import helpers from '../../helpers/utils';
 
 export default () => {
+  const [ rootAttack, setRootAttack ] = useState(false);
   const [ timerGameOne, setTimerGameOne ] = useState(5 * 60);
   const [ timerGameTwo, setTimerGameTwo ] = useState(5 * 60);
   const [ isCountingOne, setIsCountingOne ] = useState(false);
@@ -198,7 +199,7 @@ export default () => {
     const cellID = e.currentTarget.id;
 
     // Если изменилась ячейка или активна новая пешка, очищаем поле
-    if (activePawn !== getName || cellID !== activeCellID) {
+    if (activePawn !== getName || cellID !== activeCellID || getAttackTag) {
       clearFocuses();
     }
 
@@ -208,7 +209,8 @@ export default () => {
       const getAttack = document.querySelector('.attack');
 
       if (getAttack) {
-        const iconBeforeCellFocus = getAttack.childNodes[0];
+        const iconBeforeCellFocus = getAttack?.childNodes[0];
+
         if (iconBeforeCellFocus) {
           iconBeforeCellFocus.style.marginTop = '0';
         }
@@ -256,6 +258,7 @@ export default () => {
     if (newFindActiveCell) {
       newFindActiveCell.innerHTML = icon;
       findActiveCell.innerHTML = '';
+      setRootAttack(false);
       updateHistory(activeCellID, NewCellID, activePawn);
     }
 
@@ -418,6 +421,40 @@ export default () => {
       const searchHorseMovedRightBottom = document.querySelector(`#${helpers.cellABS[findIndexABS + 2]}${cellNumber + 1}`);
       const searchHorseMovedBottomLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber + 2}`);
       const searchHorseMovedBottomRight = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber + 2}`);
+
+      const searchHorseMovedTopLeftIcon = searchHorseMovedTopLeft?.childNodes[0];
+      const searchHorseMovedTopRightIcon = searchHorseMovedTopRight?.childNodes[0];
+      const searchHorseMovedLeftTopIcon = searchHorseMovedLeftTop?.childNodes[0];
+      const searchHorseMovedLeftBottomIcon = searchHorseMovedLeftBottom?.childNodes[0];
+      const searchHorseMovedRightTopIcon = searchHorseMovedRightTop?.childNodes[0];
+      const searchHorseMovedRightBottomIcon = searchHorseMovedRightBottom?.childNodes[0];
+      const searchHorseMovedBottomLeftIcon = searchHorseMovedBottomLeft?.childNodes[0];
+      const searchHorseMovedBottomRightIcon = searchHorseMovedBottomRight?.childNodes[0];
+
+      if (searchHorseMovedTopLeftIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopLeft);
+      }
+      if (searchHorseMovedTopRightIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopRight);
+      }
+      if (searchHorseMovedLeftTopIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopLeft);
+      }
+      if (searchHorseMovedLeftBottomIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopLeft);
+      }
+      if (searchHorseMovedRightTopIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopLeft);
+      }
+      if (searchHorseMovedRightBottomIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopLeft);
+      }
+      if (searchHorseMovedBottomLeftIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopLeft);
+      }
+      if (searchHorseMovedBottomRightIcon?.innerHTML) {
+        attackPawns(searchHorseMovedTopLeft);
+      }
 
       if (!searchHorseMovedTopLeft?.innerHTML) {
         findNextMove(searchHorseMovedTopLeft);

@@ -172,9 +172,18 @@ export default () => {
   // Очищаем поле боя от фокусов
   const clearFocuses = () => {
     const allFocusesTags = document.querySelectorAll('.focus');
+    const allAttackTags = document.querySelectorAll('.attack');
+
     // После выбора хода, очищаем поле от подсказок
-    for(let i = 0; i < allFocusesTags.length; i++) {
-      allFocusesTags[i].classList.remove('focus');
+    if (allFocusesTags?.length) {
+      for(let i = 0; i < allFocusesTags.length; i++) {
+        allFocusesTags[i].classList.remove('focus');
+      }
+    }
+    if (allAttackTags?.length) {
+      for(let i = 0; i < allAttackTags.length; i++) {
+        allAttackTags[i].classList.remove('attack');
+      }
     }
   }
 
@@ -185,11 +194,25 @@ export default () => {
     const icon = e.currentTarget.childNodes[0] || e.currentTarget;
     const getName = e.currentTarget.childNodes[0] ? e.currentTarget.childNodes[0].getAttribute('name') : '';
     const getFocusTag = e.currentTarget.classList.contains('focus');
+    const getAttackTag = e.currentTarget.classList.contains('attack');
     const cellID = e.currentTarget.id;
 
     // Если изменилась ячейка или активна новая пешка, очищаем поле
     if (activePawn !== getName || cellID !== activeCellID) {
       clearFocuses();
+    }
+
+    // Заменяем пешку на новую
+    if (getAttackTag && cellID !== activeCellID) {
+      nextMoved(cellID);
+      const getAttack = document.querySelector('.attack');
+
+      if (getAttack) {
+        const iconBeforeCellFocus = getAttack.childNodes[0];
+        if (iconBeforeCellFocus) {
+          iconBeforeCellFocus.style.marginTop = '0';
+        }
+      }
     }
 
     // Если изменилась пешка, возвращаем старые изменения
@@ -267,6 +290,13 @@ export default () => {
   const findNextMove = (tag) => {
     if (tag?.innerHTML === '') {
       tag.classList.add('focus');
+    }
+  }
+
+  // Фокусим пешку которую можно съесть
+  const attackPawns = (tag) => {
+    if (tag?.innerHTML) {
+      tag.classList.add('attack');
     }
   }
 
@@ -423,6 +453,7 @@ export default () => {
       if (!searchPawnMoveTop?.innerHTML) {
         findNextMove(searchPawnMoveTop);
       } else {
+        attackPawns(searchPawnMoveTop);
         return;
       }
     }
@@ -435,6 +466,7 @@ export default () => {
       if (!searchPawnMoveBottom?.innerHTML) {
         findNextMove(searchPawnMoveBottom);
       } else {
+        attackPawns(searchPawnMoveBottom);
         return;
       }
     }

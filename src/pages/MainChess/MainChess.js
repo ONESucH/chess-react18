@@ -491,10 +491,14 @@ export default () => {
         const findMePawnRight = searchPawnMoveAttackRight?.querySelector("svg");
         const findMePawnNameLeft = findMePawnLeft?.getAttribute("name");
         const findMePawnNameRight = findMePawnRight?.getAttribute("name");
-        const findME = (findMePawnNameLeft?.indexOf("Main") !== -1 || findMePawnNameRight?.indexOf("Main") !== -1) && pawnName?.indexOf("Main") !== -1;
+        const leftMeNotFound = findMePawnNameLeft?.indexOf("Main") !== -1;
+        const rightMeNotFound = findMePawnNameRight?.indexOf("Main") !== -1;
 
-        if ((searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML) && !findME) {
+        if (searchPawnMoveAttackLeft?.innerHTML && !leftMeNotFound) {
           searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
+          return;
+        }
+        if (searchPawnMoveAttackRight?.innerHTML && !rightMeNotFound) {
           searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
           return;
         }
@@ -525,10 +529,14 @@ export default () => {
         const findMePawnRight = searchPawnMoveAttackRight?.querySelector("svg");
         const findMePawnNameLeft = findMePawnLeft?.getAttribute("name");
         const findMePawnNameRight = findMePawnRight?.getAttribute("name");
-        const findME = (!findMePawnNameLeft?.indexOf("Main") !== -1 || !findMePawnNameRight?.indexOf("Main") !== -1) && !pawnName?.indexOf("Main") !== -1;
+        const leftMeNotFound = findMePawnNameLeft?.indexOf("Main") !== -1;
+        const rightMeNotFound = findMePawnNameRight?.indexOf("Main") !== -1;
 
-        if ((searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML) && !findME) {
+        if (searchPawnMoveAttackLeft?.innerHTML && leftMeNotFound) {
           searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
+          return;
+        }
+        if (searchPawnMoveAttackRight?.innerHTML && rightMeNotFound) {
           searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
           return;
         }

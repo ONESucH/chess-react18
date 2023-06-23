@@ -5,7 +5,6 @@ import { getPadTime } from '../../helpers/getPadTime';
 import helpers from '../../helpers/utils';
 
 export default () => {
-  const [ rootAttack, setRootAttack ] = useState(false);
   const [ timerGameOne, setTimerGameOne ] = useState(1 * 60);
   const [ timerGameTwo, setTimerGameTwo ] = useState(1 * 60);
   const [ isCountingOne, setIsCountingOne ] = useState(false);
@@ -256,7 +255,6 @@ export default () => {
     if (newFindActiveCell) {
       newFindActiveCell.innerHTML = icon;
       findActiveCell.innerHTML = '';
-      setRootAttack(false);
       updateHistory(activeCellID, NewCellID, activePawn);
     }
 
@@ -489,12 +487,13 @@ export default () => {
         const searchPawnMoveTop = document.querySelector(`#${cellABC}${cellNumber - i}`);
         const searchPawnMoveAttackLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber - 1}`);
         const searchPawnMoveAttackRight = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber - 1}`);
-        const searchPawnMoveAttackLeftIcon = searchPawnMoveAttackLeft?.childNodes[0];
-        const searchPawnMoveAttackRightIcon = searchPawnMoveAttackRight?.childNodes[0];
-        const namePawnLeft = searchPawnMoveAttackLeftIcon?.getAttribute('name');
-        const namePawnRight = searchPawnMoveAttackRightIcon?.getAttribute('name');
+        const findMePawnLeft = searchPawnMoveAttackLeft?.querySelector("svg");
+        const findMePawnRight = searchPawnMoveAttackRight?.querySelector("svg");
+        const findMePawnNameLeft = findMePawnLeft?.getAttribute("name");
+        const findMePawnNameRight = findMePawnRight?.getAttribute("name");
+        const findME = (findMePawnNameLeft?.indexOf("Main") !== -1 || findMePawnNameRight?.indexOf("Main") !== -1) && pawnName?.indexOf("Main") !== -1;
 
-        if (searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML) {
+        if ((searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML) && !findME) {
           searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
           searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
           return;
@@ -520,14 +519,15 @@ export default () => {
     for(let i = 1; i <= (doubleStroke || 9); i++) {
       if (pawnName === 'pawn') {
         const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
-        const searchPawnMoveAttackLeft = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber + 1}`);
-        const searchPawnMoveAttackRight = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber + 1}`);
-        const searchPawnMoveAttackLeftIcon = searchPawnMoveAttackLeft?.childNodes[0];
-        const searchPawnMoveAttackRightIcon = searchPawnMoveAttackRight?.childNodes[0];
-        const namePawnLeft = searchPawnMoveAttackLeftIcon?.getAttribute('name');
-        const namePawnRight = searchPawnMoveAttackRightIcon?.getAttribute('name');
+        const searchPawnMoveAttackLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber + 1}`);
+        const searchPawnMoveAttackRight = document.querySelector(`#${helpers.cellABS[findIndexABS + 1]}${cellNumber + 1}`);
+        const findMePawnLeft = searchPawnMoveAttackLeft?.querySelector("svg");
+        const findMePawnRight = searchPawnMoveAttackRight?.querySelector("svg");
+        const findMePawnNameLeft = findMePawnLeft?.getAttribute("name");
+        const findMePawnNameRight = findMePawnRight?.getAttribute("name");
+        const findME = (!findMePawnNameLeft?.indexOf("Main") !== -1 || !findMePawnNameRight?.indexOf("Main") !== -1) && !pawnName?.indexOf("Main") !== -1;
 
-        if (searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML && pawnName !== activePawn) {
+        if ((searchPawnMoveAttackLeft?.innerHTML || searchPawnMoveAttackRight?.innerHTML) && !findME) {
           searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
           searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
           return;

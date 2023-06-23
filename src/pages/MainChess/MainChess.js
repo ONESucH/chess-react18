@@ -6,8 +6,8 @@ import helpers from '../../helpers/utils';
 
 export default () => {
   const [ rootAttack, setRootAttack ] = useState(false);
-  const [ timerGameOne, setTimerGameOne ] = useState(5 * 60);
-  const [ timerGameTwo, setTimerGameTwo ] = useState(5 * 60);
+  const [ timerGameOne, setTimerGameOne ] = useState(1 * 60);
+  const [ timerGameTwo, setTimerGameTwo ] = useState(1 * 60);
   const [ isCountingOne, setIsCountingOne ] = useState(false);
   const [ isCountingTwo, setIsCountingTwo ] = useState(false);
   const minutesOne = getPadTime(Math.floor(timerGameOne / 60));
@@ -111,15 +111,13 @@ export default () => {
 
   // Игры закончилась!!
   useEffect(() => {
-    if (!timerGameOne || !timerGameTwo) {
+    if (!timerGameOne) {
+      console.log(`Проиграл игрок: ${users.userOne}`);
       stopGame();
-
-      if (!timerGameOne) {
-        console.log(`Проиграл игрок: ${users.userOne}`);
-      }
-      if (!timerGameTwo) {
-        console.log(`Проиграл игрок: ${users.userTwo}`);
-      }
+    }
+    if (!timerGameTwo) {
+      console.log(`Проиграл игрок: ${users.userTwo}`);
+      stopGame();
     }
   })
 
@@ -152,11 +150,12 @@ export default () => {
   const resetTimers = () => {
     setIsCountingOne(false);
     setIsCountingTwo(false);
-    setTimerGameOne(5 * 60);
-    setTimerGameTwo(5 * 60);
+    setTimerGameOne(1 * 60);
+    setTimerGameTwo(1 * 60);
   }
 
   const startGame = () => {
+    resetTimers();
     setPlayGame(1);
     setIsCountingOne(true);
   };
@@ -164,7 +163,6 @@ export default () => {
   const stopGame = () => {
     stopTimerOne();
     stopTimerTwo();
-    resetTimers();
     setPlayGame(0);
     setActivePawn('');
     setUserStep(false);
@@ -619,7 +617,12 @@ export default () => {
           <div>Игровое время второго игрока: {minutesTwo}:{secondsTwo}</div>
         </div>
         <div className="user-descriptions">
-          <h5>{!userStep ? 'Ваш ход' : 'Противник ходит'}</h5>
+          {!timerGameOne ? (
+              <h5>Выйграл второй игрок</h5>
+          ) : !timerGameTwo ? (
+              <h5>Выйграл первый игрок</h5>
+          ) : null}
+          <h5>{(!timerGameOne || !timerGameTwo || !playGame) ? null : !userStep ? 'Ваш ход' : 'Противник ходит'}</h5>
         </div>
         <Cell
             stepHistory={stepHistory}

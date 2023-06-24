@@ -1,10 +1,14 @@
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
 import MainChess from './pages/MainChess/MainChess';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 const root = createRoot(document.getElementById('root'));
-
-root.render(<MainChess />);
+root.render(
+  <React.StrictMode>
+    <MainChess />
+  </React.StrictMode>
+);
 
 reportWebVitals();

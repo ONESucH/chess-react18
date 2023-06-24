@@ -110,15 +110,10 @@ export default () => {
 
   // Игры закончилась!!
   useEffect(() => {
-    if (!timerGameOne) {
-      console.log(`Проиграл игрок: ${users.userOne}`);
+    if (!timerGameOne || !timerGameTwo) {
       stopGame();
     }
-    if (!timerGameTwo) {
-      console.log(`Проиграл игрок: ${users.userTwo}`);
-      stopGame();
-    }
-  })
+  }, [timerGameOne, timerGameTwo]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -335,7 +330,7 @@ export default () => {
         }
       }
       if ((name === 'horseMain' || name === 'horse') && item[cellID]) {
-        searchG(cellABC, cellNumber);
+        searchG(cellABC, cellNumber, name);
       }
       if ((name === 'elephantMain' || name === 'elephant' || name === 'ladyMain' || name === 'lady' || name === 'kingMain' || name === 'king') && item[cellID]) {
         if (name === 'kingMain' || name === 'king') {
@@ -405,8 +400,9 @@ export default () => {
     findPawnBottomRight(cellNumber, findIndexABS, doubleStroke);
   }
 
-  const searchG = (cellABC, cellNumber) => {
+  const searchG = (cellABC, cellNumber, pawnName) => {
     const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
+    let rootAttack = false;
 
     for(let i = 1; i <= 8; i++) {
       const searchHorseMovedTopLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - 1]}${cellNumber - 2}`);
@@ -427,54 +423,123 @@ export default () => {
       const searchHorseMovedBottomLeftIcon = searchHorseMovedBottomLeft?.childNodes[0];
       const searchHorseMovedBottomRightIcon = searchHorseMovedBottomRight?.childNodes[0];
 
-      if (searchHorseMovedTopLeftIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopLeft);
-      }
-      if (searchHorseMovedTopRightIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopRight);
-      }
-      if (searchHorseMovedLeftTopIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopLeft);
-      }
-      if (searchHorseMovedLeftBottomIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopLeft);
-      }
-      if (searchHorseMovedRightTopIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopLeft);
-      }
-      if (searchHorseMovedRightBottomIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopLeft);
-      }
-      if (searchHorseMovedBottomLeftIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopLeft);
-      }
-      if (searchHorseMovedBottomRightIcon?.innerHTML) {
-        attackPawns(searchHorseMovedTopLeft);
+      const findMePawnNameTopLeft = searchHorseMovedTopLeftIcon?.getAttribute("name");
+      const findMePawnNameTopRight = searchHorseMovedTopRightIcon?.getAttribute("name");
+      const findMePawnNameLeftTop = searchHorseMovedLeftTopIcon?.getAttribute("name");
+      const findMePawnNameLeftBottom = searchHorseMovedLeftBottomIcon?.getAttribute("name");
+      const findMePawnNameRightTop = searchHorseMovedRightTopIcon?.getAttribute("name");
+      const findMePawnNameRightBottom = searchHorseMovedRightBottomIcon?.getAttribute("name");
+      const findMePawnNameBottomLeft = searchHorseMovedBottomLeftIcon?.getAttribute("name");
+      const findMePawnNameBottomRight = searchHorseMovedBottomRightIcon?.getAttribute("name");
+
+      let topLeftMeNotFound, topRightMeNotFound, leftTopMeNotFound, leftBottomMeNotFound, rightTopMeNotFound, rightBottomMeNotFound, bottomLeftMeNotFound, bottomRightMeNotFound;
+
+      topLeftMeNotFound = findMePawnNameTopLeft?.indexOf("Main") !== -1;
+      topRightMeNotFound = findMePawnNameTopRight?.indexOf("Main") !== -1;
+      leftTopMeNotFound = findMePawnNameLeftTop?.indexOf("Main") !== -1;
+      leftBottomMeNotFound = findMePawnNameLeftBottom?.indexOf("Main") !== -1;
+      rightTopMeNotFound = findMePawnNameRightTop?.indexOf("Main") !== -1;
+      rightBottomMeNotFound = findMePawnNameRightBottom?.indexOf("Main") !== -1;
+      bottomLeftMeNotFound = findMePawnNameBottomLeft?.indexOf("Main") !== -1;
+      bottomRightMeNotFound = findMePawnNameBottomRight?.indexOf("Main") !== -1;
+
+      if (pawnName === "horse") {
+        // Игнорировать вражеские пешки
+        if (searchHorseMovedTopLeftIcon?.innerHTML && topLeftMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedTopLeft);
+        }
+        if (searchHorseMovedTopRightIcon?.innerHTML && topRightMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedTopRight);
+        }
+        if (searchHorseMovedLeftTopIcon?.innerHTML && leftTopMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedLeftTop);
+        }
+        if (searchHorseMovedLeftBottomIcon?.innerHTML && leftBottomMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedLeftBottom);
+        }
+        if (searchHorseMovedRightTopIcon?.innerHTML && rightTopMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedRightTop);
+        }
+        if (searchHorseMovedRightBottomIcon?.innerHTML && rightBottomMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedRightBottom);
+        }
+        if (searchHorseMovedBottomLeftIcon?.innerHTML && bottomLeftMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedBottomLeft);
+        }
+        if (searchHorseMovedBottomRightIcon?.innerHTML && bottomRightMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedBottomRight);
+        }
       }
 
-      if (!searchHorseMovedTopLeft?.innerHTML) {
-        findNextMove(searchHorseMovedTopLeft);
+      if (pawnName === "horseMain") {
+        // Игнорировать свой пешки
+        if (searchHorseMovedTopLeftIcon?.innerHTML && !topLeftMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedTopLeft);
+        }
+        if (searchHorseMovedTopRightIcon?.innerHTML && !topRightMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedTopRight);
+        }
+        if (searchHorseMovedLeftTopIcon?.innerHTML && !leftTopMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedLeftTop);
+        }
+        if (searchHorseMovedLeftBottomIcon?.innerHTML && !leftBottomMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedLeftBottom);
+        }
+        if (searchHorseMovedRightTopIcon?.innerHTML && !rightTopMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedRightTop);
+        }
+        if (searchHorseMovedRightBottomIcon?.innerHTML && !rightBottomMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedRightBottom);
+        }
+        if (searchHorseMovedBottomLeftIcon?.innerHTML && !bottomLeftMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedBottomLeft);
+        }
+        if (searchHorseMovedBottomRightIcon?.innerHTML && !bottomRightMeNotFound) {
+          rootAttack = true;
+          attackPawns(searchHorseMovedBottomRight);
+        }
       }
-      if (!searchHorseMovedTopRight?.innerHTML) {
-        findNextMove(searchHorseMovedTopRight);
-      }
-      if (!searchHorseMovedLeftTop?.innerHTML) {
-        findNextMove(searchHorseMovedLeftTop);
-      }
-      if (!searchHorseMovedLeftBottom?.innerHTML) {
-        findNextMove(searchHorseMovedLeftBottom);
-      }
-      if (!searchHorseMovedRightTop?.innerHTML) {
-        findNextMove(searchHorseMovedRightTop);
-      }
-      if (!searchHorseMovedRightBottom?.innerHTML) {
-        findNextMove(searchHorseMovedRightBottom);
-      }
-      if (!searchHorseMovedBottomLeft?.innerHTML) {
-        findNextMove(searchHorseMovedBottomLeft);
-      }
-      if (!searchHorseMovedBottomRight?.innerHTML) {
-        findNextMove(searchHorseMovedBottomRight);
+
+      if (!rootAttack) {
+        if (!searchHorseMovedTopLeft?.innerHTML) {
+          findNextMove(searchHorseMovedTopLeft);
+        }
+        if (!searchHorseMovedTopRight?.innerHTML) {
+          findNextMove(searchHorseMovedTopRight);
+        }
+        if (!searchHorseMovedLeftTop?.innerHTML) {
+          findNextMove(searchHorseMovedLeftTop);
+        }
+        if (!searchHorseMovedLeftBottom?.innerHTML) {
+          findNextMove(searchHorseMovedLeftBottom);
+        }
+        if (!searchHorseMovedRightTop?.innerHTML) {
+          findNextMove(searchHorseMovedRightTop);
+        }
+        if (!searchHorseMovedRightBottom?.innerHTML) {
+          findNextMove(searchHorseMovedRightBottom);
+        }
+        if (!searchHorseMovedBottomLeft?.innerHTML) {
+          findNextMove(searchHorseMovedBottomLeft);
+        }
+        if (!searchHorseMovedBottomRight?.innerHTML) {
+          findNextMove(searchHorseMovedBottomRight);
+        }
       }
     }
   }
@@ -495,11 +560,11 @@ export default () => {
         const rightMeNotFound = findMePawnNameRight?.indexOf("Main") !== -1;
 
         if (searchPawnMoveAttackLeft?.innerHTML && !leftMeNotFound) {
-          searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
+          attackPawns(searchPawnMoveAttackLeft);
           return;
         }
         if (searchPawnMoveAttackRight?.innerHTML && !rightMeNotFound) {
-          searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
+          attackPawns(searchPawnMoveAttackRight);
           return;
         }
         if (!searchPawnMoveTop?.innerHTML) {
@@ -533,11 +598,11 @@ export default () => {
         const rightMeNotFound = findMePawnNameRight?.indexOf("Main") !== -1;
 
         if (searchPawnMoveAttackLeft?.innerHTML && leftMeNotFound) {
-          searchPawnMoveAttackLeft && attackPawns(searchPawnMoveAttackLeft);
+          attackPawns(searchPawnMoveAttackLeft);
           return;
         }
         if (searchPawnMoveAttackRight?.innerHTML && rightMeNotFound) {
-          searchPawnMoveAttackRight && attackPawns(searchPawnMoveAttackRight);
+          attackPawns(searchPawnMoveAttackRight);
           return;
         }
         if (!searchPawnMoveBottom?.innerHTML) {

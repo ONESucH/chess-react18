@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Cell } from '../../components/Cell';
-import './MainChess.css';
 import { getPadTime } from '../../helpers/getPadTime';
 import helpers from '../../helpers/utils';
+import './MainChess.css';
 
 export default () => {
   const [ timerGameOne, setTimerGameOne ] = useState(1 * 60);
@@ -319,12 +319,12 @@ export default () => {
       if ((name === 'towerMain' || name === 'tower' || name === 'lady' || name === 'ladyMain' || name === 'kingMain' || name === 'king') && item[cellID]) {
         if (name === 'kingMain' || name === 'king') {
           searchTop(cellABC, cellNumber, 1);
-          searchBottom(cellABC, cellNumber, 1);
+          searchBottom(cellABC, cellNumber, 1, name);
           searchLeft(cellABC, cellNumber, 1);
           searchRight(cellABC, cellNumber, 1);
         } else {
           searchTop(cellABC, cellNumber);
-          searchBottom(cellABC, cellNumber);
+          searchBottom(cellABC, cellNumber, null, name);
           searchLeft(cellABC, cellNumber);
           searchRight(cellABC, cellNumber);
         }
@@ -571,17 +571,21 @@ export default () => {
           findNextMove(searchPawnMoveTop);
         }
       } else {
+        // Attacks Top
         const searchPawnMoveTop = document.querySelector(`#${cellABC}${cellNumber - i}`);
+        const findMePawnTop = searchPawnMoveTop?.querySelector("svg");
+        const findMePawnNameTop = findMePawnTop?.getAttribute("name");
+        const topMeNotFound = findMePawnNameTop?.indexOf("Main") !== -1;
 
-        if (!searchPawnMoveTop?.innerHTML) {
-          findNextMove(searchPawnMoveTop);
-        } else {
+        if (searchPawnMoveTop?.innerHTML && !topMeNotFound) {
+          attackPawns(searchPawnMoveTop);
           return;
         }
       }
     }
   }
 
+  // Поиск ходов по нижней части, есть возможность ограничинить количество ходов "doubleStroke"
   const searchBottom = (cellABC, cellNumber, doubleStroke, pawnName) => {
     const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
 
@@ -609,12 +613,21 @@ export default () => {
           findNextMove(searchPawnMoveBottom);
         }
       } else {
-        const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber - i}`);
+        const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
 
         if (!searchPawnMoveBottom?.innerHTML) {
           findNextMove(searchPawnMoveBottom);
         } else {
-          return;
+          // Attacks Bottom
+          const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
+          const findMePawnBottom = searchPawnMoveBottom?.querySelector("svg");
+          const findMePawnNameBottom = findMePawnBottom?.getAttribute("name");
+          const bottomMeNotFound = findMePawnNameBottom?.indexOf("Main") !== -1;
+
+          if (searchPawnMoveBottom?.innerHTML && bottomMeNotFound) {
+            attackPawns(searchPawnMoveBottom);
+            return;
+          }
         }
       }
     }

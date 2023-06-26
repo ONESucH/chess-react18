@@ -86,3 +86,24 @@ input[type='color'] {
   cursor: pointer;
   margin-bottom: 20px;
 }
+
+.modal-message {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background: rgb(32 38 25 / 73%);
+}
+
+.modal-title {
+  font-family: cursive;
+  font-weight: bold;
+  color: #f83838;
+  font-size: 4em;
+  text-transform: uppercase;
+}

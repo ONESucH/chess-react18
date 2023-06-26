@@ -7,6 +7,7 @@ import './MainChess.css';
 export default () => {
   const [ timerGameOne, setTimerGameOne ] = useState(1 * 60);
   const [ timerGameTwo, setTimerGameTwo ] = useState(1 * 60);
+  const [ failMessage, setFailMessage ] = useState(false);
   const [ isCountingOne, setIsCountingOne ] = useState(false);
   const [ isCountingTwo, setIsCountingTwo ] = useState(false);
   const minutesOne = getPadTime(Math.floor(timerGameOne / 60));
@@ -152,6 +153,7 @@ export default () => {
     resetTimers();
     setPlayGame(1);
     setIsCountingOne(true);
+    setFailMessage(false);
   };
 
   const stopGame = () => {
@@ -242,6 +244,11 @@ export default () => {
     setActivePawn(getName);
     // Активная ячейка
     setActiveCellID(cellID);
+
+    if (getAttackTag && (getName === "king" || getName === "kingMain")) {
+      stopGame();
+      setFailMessage(true);
+    }
   };
 
   // ПРОДОЛЖАЕМ ходить и обновлять ход в истории
@@ -847,6 +854,11 @@ export default () => {
             activeMove={activeMove}
         />
       </div>
+      {failMessage ? (
+          <div className="modal-message">
+              <h4 className="modal-title">end game</h4>
+          </div>
+      ) : null}
     </div>
   );
 }

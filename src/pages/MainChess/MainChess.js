@@ -13,7 +13,7 @@ export default () => {
   const secondsOne = getPadTime(timerGameOne % 60);
   const minutesTwo = getPadTime(Math.floor(timerGameTwo / 60));
   const secondsTwo = getPadTime(timerGameTwo % 60);
-  const [ userStep, setUserStep ] = useState(false);
+  const [ userStep, setUserStep ] = useState(true);
   const [ users, setUsers ] = useState({
     userOne: 'Игрок 1',
     userTwo: 'Игрок 2',
@@ -159,7 +159,7 @@ export default () => {
     stopTimerTwo();
     setPlayGame(0);
     setActivePawn('');
-    setUserStep(false);
+    setUserStep(true);
   };
 
   // Очищаем поле боя от фокусов
@@ -228,10 +228,10 @@ export default () => {
     }
 
     // Какой игрок ходит?
-    if ((getName === 'ladyMain' || getName === 'kingMain' || getName === 'elephantMain' || getName === 'horseMain' || getName === 'towerMain' || getName === 'pawnMain') && !userStep) {
+    if ((getName === 'ladyMain' || getName === 'kingMain' || getName === 'elephantMain' || getName === 'horseMain' || getName === 'towerMain' || getName === 'pawnMain') && userStep) {
       whichPawnThePlayerChose(getName, icon, cellID);
     }
-    if ((getName === 'lady' || getName === 'king' || getName === 'elephant' || getName === 'horse' || getName === 'tower' || getName === 'pawn') && userStep) {
+    if ((getName === 'lady' || getName === 'king' || getName === 'elephant' || getName === 'horse' || getName === 'tower' || getName === 'pawn') && !userStep) {
       whichPawnThePlayerChose(getName, icon, cellID);
     }
 
@@ -253,7 +253,7 @@ export default () => {
       updateHistory(activeCellID, NewCellID, activePawn);
     }
 
-    if (userStep) {
+    if (!userStep) {
       setIsCountingOne(true);
       setIsCountingTwo(false);
       setUsers((props) => ({
@@ -577,9 +577,15 @@ export default () => {
         const findMePawnNameTop = findMePawnTop?.getAttribute("name");
         const topMeNotFound = findMePawnNameTop?.indexOf("Main") !== -1;
 
-        if (searchPawnMoveTop?.innerHTML && !topMeNotFound) {
-          attackPawns(searchPawnMoveTop);
-          return;
+        if (!searchPawnMoveTop?.innerHTML) {
+          findNextMove(searchPawnMoveTop);
+        } else {
+          if (searchPawnMoveTop?.innerHTML && topMeNotFound) {
+            return;
+          } else if (searchPawnMoveTop?.innerHTML && !topMeNotFound) {
+            attackPawns(searchPawnMoveTop);
+            return;
+          }
         }
       }
     }
@@ -614,19 +620,27 @@ export default () => {
         }
       } else {
         const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
+        const findMePawnBottom = searchPawnMoveBottom?.querySelector("svg");
+        const findMePawnNameBottom = findMePawnBottom?.getAttribute("name");
+        const bottomMeNotFound = findMePawnNameBottom?.indexOf("Main") !== -1;
 
         if (!searchPawnMoveBottom?.innerHTML) {
           findNextMove(searchPawnMoveBottom);
         } else {
-          // Attacks Bottom
-          const searchPawnMoveBottom = document.querySelector(`#${cellABC}${cellNumber + i}`);
-          const findMePawnBottom = searchPawnMoveBottom?.querySelector("svg");
-          const findMePawnNameBottom = findMePawnBottom?.getAttribute("name");
-          const bottomMeNotFound = findMePawnNameBottom?.indexOf("Main") !== -1;
-
-          if (searchPawnMoveBottom?.innerHTML && bottomMeNotFound) {
-            attackPawns(searchPawnMoveBottom);
-            return;
+          if (userStep) {
+            if (searchPawnMoveBottom?.innerHTML && bottomMeNotFound) {
+              return;
+            } else if (searchPawnMoveBottom?.innerHTML && !bottomMeNotFound) {
+              attackPawns(searchPawnMoveBottom);
+              return;
+            }
+          } else {
+            if (searchPawnMoveBottom?.innerHTML && !bottomMeNotFound) {
+              return;
+            } else if (searchPawnMoveBottom?.innerHTML && bottomMeNotFound) {
+              attackPawns(searchPawnMoveBottom);
+              return;
+            }
           }
         }
       }

@@ -160,6 +160,9 @@ export default () => {
     setPlayGame(0);
     setActivePawn('');
     setUserStep(true);
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 5000);
   };
 
   // Очищаем поле боя от фокусов
@@ -319,7 +322,7 @@ export default () => {
       if ((name === 'towerMain' || name === 'tower' || name === 'lady' || name === 'ladyMain' || name === 'kingMain' || name === 'king') && item[cellID]) {
         if (name === 'kingMain' || name === 'king') {
           searchTop(cellABC, cellNumber, 1);
-          searchBottom(cellABC, cellNumber, 1, name);
+          searchBottom(cellABC, cellNumber, 1);
           searchLeft(cellABC, cellNumber, 1);
           searchRight(cellABC, cellNumber, 1);
         } else {
@@ -827,14 +830,18 @@ export default () => {
           <div>Игровое время основного игрока: {minutesOne}:{secondsOne}</div>
           <div>Игровое время второго игрока: {minutesTwo}:{secondsTwo}</div>
         </div>
-        <div className="user-descriptions">
-          {!timerGameOne ? (
-              <h5>Выйграл второй игрок</h5>
-          ) : !timerGameTwo ? (
-              <h5>Выйграл первый игрок</h5>
-          ) : null}
-          <h5>{(!timerGameOne || !timerGameTwo || !playGame) ? null : !userStep ? 'Ваш ход' : 'Противник ходит'}</h5>
-        </div>
+        {(timerGameOne || timerGameTwo || playGame) ? (
+            <div className="user-descriptions">
+              {!timerGameOne ? (
+                  <h5>Выйграл второй игрок</h5>
+              ) : !timerGameTwo ? (
+                  <h5>Выйграл первый игрок</h5>
+              ) : null}
+              {timerGameOne && timerGameTwo && playGame ? (
+                  <h5>{userStep ? 'Ваш ход' : 'Противник ходит'}</h5>
+              ) : null}
+            </div>
+        ): null}
         <Cell
             stepHistory={stepHistory}
             activeMove={activeMove}

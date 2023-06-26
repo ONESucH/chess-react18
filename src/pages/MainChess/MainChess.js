@@ -343,50 +343,118 @@ export default () => {
     });
   };
 
-  const findPawnTopLeft = (cellNumber, findIndexABS, doubleStroke) => {
+  const findTopLeft = (cellNumber, findIndexABS, doubleStroke) => {
     for(let i = 1; i <= (doubleStroke || 8); i++) {
-      const searchElephantMovedTopLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber - i}`);
+      const searchMovedTopLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber - i}`);
+      const findMeTopLeft = searchMovedTopLeft?.querySelector("svg");
+      const findMeNameTopLeft = findMeTopLeft?.getAttribute("name");
+      const topLeftMeNotFound = findMeNameTopLeft?.indexOf("Main") !== -1;
 
-      if (!searchElephantMovedTopLeft?.innerHTML) {
-        findNextMove(searchElephantMovedTopLeft);
+      if (!searchMovedTopLeft?.innerHTML) {
+        findNextMove(searchMovedTopLeft);
       } else {
-        return;
+        if (userStep) {
+          if (searchMovedTopLeft?.innerHTML && topLeftMeNotFound) {
+            return;
+          } else if (searchMovedTopLeft?.innerHTML && !topLeftMeNotFound) {
+            attackPawns(searchMovedTopLeft);
+            return;
+          }
+        } else {
+          if (searchMovedTopLeft?.innerHTML && !topLeftMeNotFound) {
+            return;
+          } else if (searchMovedTopLeft?.innerHTML && topLeftMeNotFound) {
+            attackPawns(searchMovedTopLeft);
+            return;
+          }
+        }
       }
     }
   }
 
-  const findPawnTopRight = (cellNumber, findIndexABS, doubleStroke) => {
+  const findTopRight = (cellNumber, findIndexABS, doubleStroke) => {
     for(let i = 1; i <= (doubleStroke || 8); i++) {
-      const searchElephantMovedTopRight = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber - i}`);
+      const searchMovedTopRight = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber - i}`);
+      const findMeTopRight = searchMovedTopRight?.querySelector("svg");
+      const findMeNameTopRight = findMeTopRight?.getAttribute("name");
+      const topRightMeNotFound = findMeNameTopRight?.indexOf("Main") !== -1;
 
-      if (!searchElephantMovedTopRight?.innerHTML) {
-        findNextMove(searchElephantMovedTopRight);
+      if (!searchMovedTopRight?.innerHTML) {
+        findNextMove(searchMovedTopRight);
       } else {
-        return;
+        if (userStep) {
+          if (searchMovedTopRight?.innerHTML && topRightMeNotFound) {
+            return;
+          } else if (searchMovedTopRight?.innerHTML && !topRightMeNotFound) {
+            attackPawns(searchMovedTopRight);
+            return;
+          }
+        } else {
+          if (searchMovedTopRight?.innerHTML && !topRightMeNotFound) {
+            return;
+          } else if (searchMovedTopRight?.innerHTML && topRightMeNotFound) {
+            attackPawns(searchMovedTopRight);
+            return;
+          }
+        }
       }
     }
   }
 
-  const findPawnBottomLeft = (cellNumber, findIndexABS, doubleStroke) => {
+  const findBottomLeft = (cellNumber, findIndexABS, doubleStroke) => {
     for(let i = 1; i <= (doubleStroke || 8); i++) {
-      const searchElephantMovedBottomLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber + i}`);
+      const searchMovedBottomLeft = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber + i}`);
+      const findMeBottomLeft = searchMovedBottomLeft?.querySelector("svg");
+      const findMeNameBottomLeft = findMeBottomLeft?.getAttribute("name");
+      const bottomLeftMeNotFound = findMeNameBottomLeft?.indexOf("Main") !== -1;
 
-      if (!searchElephantMovedBottomLeft?.innerHTML) {
-        findNextMove(searchElephantMovedBottomLeft);
+      if (!searchMovedBottomLeft?.innerHTML) {
+        findNextMove(searchMovedBottomLeft);
       } else {
-        return;
+        if (userStep) {
+          if (searchMovedBottomLeft?.innerHTML && bottomLeftMeNotFound) {
+            return;
+          } else if (searchMovedBottomLeft?.innerHTML && !bottomLeftMeNotFound) {
+            attackPawns(searchMovedBottomLeft);
+            return;
+          }
+        } else {
+          if (searchMovedBottomLeft?.innerHTML && !bottomLeftMeNotFound) {
+            return;
+          } else if (searchMovedBottomLeft?.innerHTML && bottomLeftMeNotFound) {
+            attackPawns(searchMovedBottomLeft);
+            return;
+          }
+        }
       }
     }
   }
 
-  const findPawnBottomRight = (cellNumber, findIndexABS, doubleStroke) => {
+  const findBottomRight = (cellNumber, findIndexABS, doubleStroke) => {
     for(let i = 1; i <= (doubleStroke || 8); i++) {
-      const searchElephantMovedBottomRight = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber + i}`);
+      const searchMovedBottomRight = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber + i}`);
+      const findMeBottomRight = searchMovedBottomRight?.querySelector("svg");
+      const findMeNameBottomRight = findMeBottomRight?.getAttribute("name");
+      const topLeftMeNotFound = findMeNameBottomRight?.indexOf("Main") !== -1;
 
-      if (!searchElephantMovedBottomRight?.innerHTML) {
-        findNextMove(searchElephantMovedBottomRight);
+      if (!searchMovedBottomRight?.innerHTML) {
+        findNextMove(searchMovedBottomRight);
       } else {
-        return;
+        if (userStep) {
+          if (searchMovedBottomRight?.innerHTML && topLeftMeNotFound) {
+            return;
+          } else if (searchMovedBottomRight?.innerHTML && !topLeftMeNotFound) {
+            attackPawns(searchMovedBottomRight);
+            return;
+          }
+        } else {
+          if (searchMovedBottomRight?.innerHTML && !topLeftMeNotFound) {
+            return;
+          } else if (searchMovedBottomRight?.innerHTML && topLeftMeNotFound) {
+            attackPawns(searchMovedBottomRight);
+            return;
+          }
+        }
       }
     }
   }
@@ -394,10 +462,10 @@ export default () => {
   const searchX = (cellABC, cellNumber, doubleStroke) => {
     const findIndexABS = helpers.cellABS.findIndex(item => item === cellABC);
 
-    findPawnTopLeft(cellNumber, findIndexABS, doubleStroke);
-    findPawnTopRight(cellNumber, findIndexABS, doubleStroke);
-    findPawnBottomLeft(cellNumber, findIndexABS, doubleStroke);
-    findPawnBottomRight(cellNumber, findIndexABS, doubleStroke);
+    findTopLeft(cellNumber, findIndexABS, doubleStroke);
+    findTopRight(cellNumber, findIndexABS, doubleStroke);
+    findBottomLeft(cellNumber, findIndexABS, doubleStroke);
+    findBottomRight(cellNumber, findIndexABS, doubleStroke);
   }
 
   const searchG = (cellABC, cellNumber, pawnName) => {

@@ -580,11 +580,20 @@ export default () => {
         if (!searchPawnMoveTop?.innerHTML) {
           findNextMove(searchPawnMoveTop);
         } else {
-          if (searchPawnMoveTop?.innerHTML && topMeNotFound) {
-            return;
-          } else if (searchPawnMoveTop?.innerHTML && !topMeNotFound) {
-            attackPawns(searchPawnMoveTop);
-            return;
+          if (userStep) {
+            if (searchPawnMoveTop?.innerHTML && topMeNotFound) {
+              return;
+            } else if (searchPawnMoveTop?.innerHTML && !topMeNotFound) {
+              attackPawns(searchPawnMoveTop);
+              return;
+            }
+          } else {
+            if (searchPawnMoveTop?.innerHTML && !topMeNotFound) {
+              return;
+            } else if (searchPawnMoveTop?.innerHTML && topMeNotFound) {
+              attackPawns(searchPawnMoveTop);
+              return;
+            }
           }
         }
       }
@@ -652,11 +661,28 @@ export default () => {
 
     for(let i = 1; i <= (doubleStroke || 9); i++) {
       const searchPawnMoveLeft = document.querySelector(`#${helpers.cellABS[findIndexABS + i]}${cellNumber}`);
+      const findMePawnLeft = searchPawnMoveLeft?.querySelector("svg");
+      const findMePawnNameLeft = findMePawnLeft?.getAttribute("name");
+      const leftMeNotFound = findMePawnNameLeft?.indexOf("Main") !== -1;
 
       if (!searchPawnMoveLeft?.innerHTML) {
         findNextMove(searchPawnMoveLeft);
       } else {
-        return;
+        if (userStep) {
+          if (searchPawnMoveLeft?.innerHTML && leftMeNotFound) {
+            return;
+          } else if (searchPawnMoveLeft?.innerHTML && !leftMeNotFound) {
+            attackPawns(searchPawnMoveLeft);
+            return;
+          }
+        } else {
+          if (searchPawnMoveLeft?.innerHTML && !leftMeNotFound) {
+            return;
+          } else if (searchPawnMoveLeft?.innerHTML && leftMeNotFound) {
+            attackPawns(searchPawnMoveLeft);
+            return;
+          }
+        }
       }
     }
   }
@@ -666,11 +692,28 @@ export default () => {
 
     for(let i = 1; i <= (doubleStroke || 9); i++) {
       const searchPawnMoveRight = document.querySelector(`#${helpers.cellABS[findIndexABS - i]}${cellNumber}`);
+      const findMePawnRight = searchPawnMoveRight?.querySelector("svg");
+      const findMePawnNameRight = findMePawnRight?.getAttribute("name");
+      const rightMeNotFound = findMePawnNameRight?.indexOf("Main") !== -1;
 
       if (!searchPawnMoveRight?.innerHTML) {
         findNextMove(searchPawnMoveRight);
       } else {
-        return;
+        if (userStep) {
+          if (searchPawnMoveRight?.innerHTML && rightMeNotFound) {
+            return;
+          } else if (searchPawnMoveRight?.innerHTML && !rightMeNotFound) {
+            attackPawns(searchPawnMoveRight);
+            return;
+          }
+        } else {
+          if (searchPawnMoveRight?.innerHTML && !rightMeNotFound) {
+            return;
+          } else if (searchPawnMoveRight?.innerHTML && rightMeNotFound) {
+            attackPawns(searchPawnMoveRight);
+            return;
+          }
+        }
       }
     }
   }

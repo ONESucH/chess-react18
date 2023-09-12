@@ -311,7 +311,6 @@ export default () => {
 
   // Определим возможные ходы
   const pawnCapabilities = (name, icon, cellID) => {
-    console.log("pawnCapabilities load", name);
     let cellABC = cellID[0];
     let cellNumber = +cellID[1];
 
@@ -369,6 +368,9 @@ export default () => {
       if (!searchMovedTopLeft?.innerHTML) {
         findNextMove(searchMovedTopLeft);
       } else {
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMeNameTopLeft === "kingMain" || findMeNameTopLeft === "king")) {
+          return;
+        }
         if (userStep) {
           if (searchMovedTopLeft?.innerHTML && topLeftMeNotFound) {
             return;
@@ -398,6 +400,9 @@ export default () => {
       if (!searchMovedTopRight?.innerHTML) {
         findNextMove(searchMovedTopRight);
       } else {
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMeNameTopRight === "kingMain" || findMeNameTopRight === "king")) {
+          return;
+        }
         if (userStep) {
           if (searchMovedTopRight?.innerHTML && topRightMeNotFound) {
             return;
@@ -427,6 +432,9 @@ export default () => {
       if (!searchMovedBottomLeft?.innerHTML) {
         findNextMove(searchMovedBottomLeft);
       } else {
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMeNameBottomLeft === "kingMain" || findMeNameBottomLeft === "king")) {
+          return;
+        }
         if (userStep) {
           if (searchMovedBottomLeft?.innerHTML && bottomLeftMeNotFound) {
             return;
@@ -456,6 +464,9 @@ export default () => {
       if (!searchMovedBottomRight?.innerHTML) {
         findNextMove(searchMovedBottomRight);
       } else {
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMeNameBottomRight === "kingMain" || findMeNameBottomRight === "king")) {
+          return;
+        }
         if (userStep) {
           if (searchMovedBottomRight?.innerHTML && topLeftMeNotFound) {
             return;
@@ -643,6 +654,14 @@ export default () => {
         const leftMeNotFound = findMePawnNameLeft?.indexOf("Main") !== -1;
         const rightMeNotFound = findMePawnNameRight?.indexOf("Main") !== -1;
 
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMePawnNameLeft === "kingMain" || findMePawnNameLeft === "king")) {
+          return;
+        }
+
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMePawnNameRight === "kingMain" || findMePawnNameRight === "king")) {
+          return;
+        }
+
         if (searchPawnMoveAttackLeft?.innerHTML && !leftMeNotFound) {
           attackPawns(searchPawnMoveAttackLeft);
           return;
@@ -703,6 +722,14 @@ export default () => {
         const findMePawnNameRight = findMePawnRight?.getAttribute("name");
         const leftMeNotFound = findMePawnNameLeft?.indexOf("Main") !== -1;
         const rightMeNotFound = findMePawnNameRight?.indexOf("Main") !== -1;
+
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMePawnNameLeft === "kingMain" || findMePawnNameLeft === "king")) {
+          return;
+        }
+
+        if (((counterAllPawnsMain > 1 && activeUsersMoved === "Main") || (counterAllPawns > 1 && activeUsersMoved === "")) && (findMePawnNameRight === "kingMain" || findMePawnNameRight === "king")) {
+          return;
+        }
 
         if (searchPawnMoveAttackLeft?.innerHTML && leftMeNotFound) {
           attackPawns(searchPawnMoveAttackLeft);

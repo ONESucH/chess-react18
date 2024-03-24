@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.121db6b1.css",
-    "main.js": "/static/js/main.4f856d91.js",
-    "static/js/787.caa86c36.chunk.js": "/static/js/787.caa86c36.chunk.js",
-    "static/media/lady.svg": "/static/media/lady.519d55d89ba9f58ed3c9cd968efc7dc5.svg",
-    "static/media/ladyMain.svg": "/static/media/ladyMain.778903ec1126c01587cb6c3cf105cc5c.svg",
-    "static/media/elephant.svg": "/static/media/elephant.75e9a4d137ba08d9925adfe26a49eb58.svg",
-    "static/media/elephantMain.svg": "/static/media/elephantMain.7f46c5efb9d71734e50999e066149831.svg",
-    "static/media/king.svg": "/static/media/king.8b7d071701bcfd71e0bdd62c6c97f8a3.svg",
-    "static/media/kingMain.svg": "/static/media/kingMain.6236522e588158f670fb53587c6d2fce.svg",
-    "static/media/horse.svg": "/static/media/horse.62553867a9c018dfb1e931f48a2798f4.svg",
-    "static/media/horseMain.svg": "/static/media/horseMain.b22ce0e59803f0daf6949a07bfc21cdc.svg",
-    "static/media/pawn.svg": "/static/media/pawn.f1424b6344fbdbe77868bac787cc1eca.svg",
-    "static/media/pawnMain.svg": "/static/media/pawnMain.f29a1b900007edfe8e0de2eb06e475fd.svg",
-    "static/media/tower.svg": "/static/media/tower.394e17fac38dbbcfd4db895a5155f782.svg",
-    "static/media/towerMain.svg": "/static/media/towerMain.56be0384163d5c41e77581acfbb33600.svg",
-    "index.html": "/index.html",
-    "main.121db6b1.css.map": "/static/css/main.121db6b1.css.map",
-    "main.4f856d91.js.map": "/static/js/main.4f856d91.js.map",
-    "787.caa86c36.chunk.js.map": "/static/js/787.caa86c36.chunk.js.map"
+    "main.css": "/chess-react18/static/css/main.121db6b1.css",
+    "main.js": "/chess-react18/static/js/main.7eaa20d5.js",
+    "static/js/787.caa86c36.chunk.js": "/chess-react18/static/js/787.caa86c36.chunk.js",
+    "static/media/lady.svg": "/chess-react18/static/media/lady.519d55d89ba9f58ed3c9cd968efc7dc5.svg",
+    "static/media/ladyMain.svg": "/chess-react18/static/media/ladyMain.778903ec1126c01587cb6c3cf105cc5c.svg",
+    "static/media/elephant.svg": "/chess-react18/static/media/elephant.75e9a4d137ba08d9925adfe26a49eb58.svg",
+    "static/media/elephantMain.svg": "/chess-react18/static/media/elephantMain.7f46c5efb9d71734e50999e066149831.svg",
+    "static/media/king.svg": "/chess-react18/static/media/king.8b7d071701bcfd71e0bdd62c6c97f8a3.svg",
+    "static/media/kingMain.svg": "/chess-react18/static/media/kingMain.6236522e588158f670fb53587c6d2fce.svg",
+    "static/media/horse.svg": "/chess-react18/static/media/horse.62553867a9c018dfb1e931f48a2798f4.svg",
+    "static/media/horseMain.svg": "/chess-react18/static/media/horseMain.b22ce0e59803f0daf6949a07bfc21cdc.svg",
+    "static/media/pawn.svg": "/chess-react18/static/media/pawn.f1424b6344fbdbe77868bac787cc1eca.svg",
+    "static/media/pawnMain.svg": "/chess-react18/static/media/pawnMain.f29a1b900007edfe8e0de2eb06e475fd.svg",
+    "static/media/tower.svg": "/chess-react18/static/media/tower.394e17fac38dbbcfd4db895a5155f782.svg",
+    "static/media/towerMain.svg": "/chess-react18/static/media/towerMain.56be0384163d5c41e77581acfbb33600.svg",
+    "index.html": "/chess-react18/index.html",
+    "main.121db6b1.css.map": "/chess-react18/static/css/main.121db6b1.css.map",
+    "main.7eaa20d5.js.map": "/chess-react18/static/js/main.7eaa20d5.js.map",
+    "787.caa86c36.chunk.js.map": "/chess-react18/static/js/787.caa86c36.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.121db6b1.css",
-    "static/js/main.4f856d91.js"
+    "static/js/main.7eaa20d5.js"
   ]
 }
